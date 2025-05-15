@@ -73,9 +73,13 @@
         const toggleButton = document.getElementById('toggleCheck');
         const searchInput = document.getElementById('searchChannel');
         const channelNameDisplay = document.getElementById('channelName');
+        /*
         const m3uUrls = [
-            'https://raw.githubusercontent.com/emonnaja/indonesian-IPTV/main/index.m3u',
+            'https://raw.githubusercontent.com/alfigusman1/IPTV-Indonesia/refs/heads/main/index.m3u',
             'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/id.m3u'
+        ];*/
+        const m3uUrls = [
+            'https://raw.githubusercontent.com/alfigusman1/IPTV-Indonesia/refs/heads/main/index.m3u'
         ];
         let channels = {};
         let channelKeys = [];
