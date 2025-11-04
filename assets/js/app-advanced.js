@@ -206,10 +206,10 @@ function populateCountryFilter() {
   const countries = channelManager.getCountries();
   countryFilter.innerHTML = '<option value="">Semua Negara</option>';
 
-  countries.forEach(country => {
+  countries.forEach(countryName => {
     const option = document.createElement('option');
-    option.value = country;
-    option.textContent = country;
+    option.value = countryName;
+    option.textContent = countryName;
     countryFilter.appendChild(option);
   });
 
@@ -264,7 +264,7 @@ function createChannelCard(channel) {
             <div class="channel-card-body">
                 <h6 class="channel-card-title">${channel.name}</h6>
                 <p class="channel-card-country">
-                    <i class="bi bi-geo-alt"></i> ${channel.country}
+                    <i class="bi bi-geo-alt"></i> ${channel.country}  <!-- Nama lengkap -->
                 </p>
                 <div class="channel-card-footer">
                     <div>

@@ -1,270 +1,1803 @@
 // channels.js - Manajemen data channel IPTV
 
 class ChannelManager {
-    constructor() {
-        this.channels = [];
-        this.favorites = this.loadFavorites();
-        this.defaultChannels = this.getDefaultChannels();
+  constructor() {
+    this.channels = [];
+    this.favorites = this.loadFavorites();
+    this.defaultChannels = this.getDefaultChannels();
+  }
+
+  // Load channels dari localStorage atau gunakan default
+  async loadChannels() {
+    const stored = localStorage.getItem('iptvChannels');
+    if (stored) {
+      this.channels = JSON.parse(stored);
+    } else {
+      await this.loadDefaultChannels();
     }
+    return this.channels;
+  }
 
-    // Load channels dari localStorage atau gunakan default
-    async loadChannels() {
-        const stored = localStorage.getItem('iptvChannels');
-        if (stored) {
-            this.channels = JSON.parse(stored);
-        } else {
-            await this.loadDefaultChannels();
-        }
-        return this.channels;
+  // Load default channels dari IPTV-Org dan Free-TV
+  async loadDefaultChannels() {
+    try {
+      // Daftar default channels dari berbagai negara
+      this.channels = this.defaultChannels;
+      this.saveChannels();
+    } catch (error) {
+      console.error('Error loading default channels:', error);
     }
+  }
 
-    // Load default channels dari IPTV-Org dan Free-TV
-    async loadDefaultChannels() {
-        try {
-            // Daftar default channels dari berbagai negara
-            this.channels = this.defaultChannels;
-            this.saveChannels();
-        } catch (error) {
-            console.error('Error loading default channels:', error);
-        }
-    }
+  // Default channels (bisa diperluas)
+  getDefaultChannels() {
+    return [
+      {
+        id: 'iptv-org-global',
+        name: 'IPTV-Org Global (8000+ channels)',
+        url: 'https://iptv-org.github.io/iptv/index.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'Complete IPTV-Org worldwide channels (besar, hanya untuk advanced users)',
+      },
+      {
+        id: 'iptv-org-adult',
+        name: 'IPTV-Org Adult',
+        url: 'https://iptv-org.github.io/iptv/categories/adult.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org adult channels',
+      },
+      {
+        id: 'iptv-org-animation',
+        name: 'IPTV-Org Animation',
+        url: 'https://iptv-org.github.io/iptv/categories/animation.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org animation channels',
+      },
+      {
+        id: 'iptv-org-auto',
+        name: 'IPTV-Org Auto',
+        url: 'https://iptv-org.github.io/iptv/categories/auto.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org auto channels',
+      },
+      {
+        id: 'iptv-org-business',
+        name: 'IPTV-Org Business',
+        url: 'https://iptv-org.github.io/iptv/categories/business.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org business channels',
+      },
+      {
+        id: 'iptv-org-classic',
+        name: 'IPTV-Org Classic',
+        url: 'https://iptv-org.github.io/iptv/categories/classic.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org classic channels',
+      },
+      {
+        id: 'iptv-org-comedy',
+        name: 'IPTV-Org Comedy',
+        url: 'https://iptv-org.github.io/iptv/categories/comedy.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org comedy channels',
+      },
+      {
+        id: 'iptv-org-documentary',
+        name: 'IPTV-Org Documentary',
+        url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org documentary channels',
+      },
+      {
+        id: 'iptv-org-education',
+        name: 'IPTV-Org Education',
+        url: 'https://iptv-org.github.io/iptv/categories/education.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org education channels',
+      },
+      {
+        id: 'iptv-org-entertainment',
+        name: 'IPTV-Org Entertainment',
+        url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org entertainment channels',
+      },
+      {
+        id: 'iptv-org-family',
+        name: 'IPTV-Org Family',
+        url: 'https://iptv-org.github.io/iptv/categories/family.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org family channels',
+      },
+      {
+        id: 'iptv-org-fashion',
+        name: 'IPTV-Org Fashion',
+        url: 'https://iptv-org.github.io/iptv/categories/fashion.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org fashion channels',
+      },
+      {
+        id: 'iptv-org-food',
+        name: 'IPTV-Org Food',
+        url: 'https://iptv-org.github.io/iptv/categories/food.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org food channels',
+      },
+      {
+        id: 'iptv-org-general',
+        name: 'IPTV-Org General',
+        url: 'https://iptv-org.github.io/iptv/categories/general.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org general channels',
+      },
+      {
+        id: 'iptv-org-health',
+        name: 'IPTV-Org Health',
+        url: 'https://iptv-org.github.io/iptv/categories/health.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org health channels',
+      },
+      {
+        id: 'iptv-org-history',
+        name: 'IPTV-Org History',
+        url: 'https://iptv-org.github.io/iptv/categories/history.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org history channels',
+      },
+      {
+        id: 'iptv-org-hobby',
+        name: 'IPTV-Org Hobby',
+        url: 'https://iptv-org.github.io/iptv/categories/hobby.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org hobby channels',
+      },
+      {
+        id: 'iptv-org-kids',
+        name: 'IPTV-Org Kids',
+        url: 'https://iptv-org.github.io/iptv/categories/kids.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org kids channels',
+      },
+      {
+        id: 'iptv-org-legislative',
+        name: 'IPTV-Org Legislative',
+        url: 'https://iptv-org.github.io/iptv/categories/legislative.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org legislative channels',
+      },
+      {
+        id: 'iptv-org-lifestyle',
+        name: 'IPTV-Org Lifestyle',
+        url: 'https://iptv-org.github.io/iptv/categories/lifestyle.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org lifestyle channels',
+      },
+      {
+        id: 'iptv-org-local',
+        name: 'IPTV-Org Local',
+        url: 'https://iptv-org.github.io/iptv/categories/local.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org local channels',
+      },
+      {
+        id: 'iptv-org-movies',
+        name: 'IPTV-Org Movies',
+        url: 'https://iptv-org.github.io/iptv/categories/movies.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org movies channels',
+      },
+      {
+        id: 'iptv-org-music',
+        name: 'IPTV-Org Music',
+        url: 'https://iptv-org.github.io/iptv/categories/music.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org music channels',
+      },
+      {
+        id: 'iptv-org-news',
+        name: 'IPTV-Org News',
+        url: 'https://iptv-org.github.io/iptv/categories/news.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org news channels',
+      },
+      {
+        id: 'iptv-org-outdoor',
+        name: 'IPTV-Org Outdoor',
+        url: 'https://iptv-org.github.io/iptv/categories/outdoor.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org outdoor channels',
+      },
+      {
+        id: 'iptv-org-pets',
+        name: 'IPTV-Org Pets',
+        url: 'https://iptv-org.github.io/iptv/categories/pets.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org pets channels',
+      },
+      {
+        id: 'iptv-org-religious',
+        name: 'IPTV-Org Religious',
+        url: 'https://iptv-org.github.io/iptv/categories/religious.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org religious channels',
+      },
+      {
+        id: 'iptv-org-science',
+        name: 'IPTV-Org Science',
+        url: 'https://iptv-org.github.io/iptv/categories/science.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org science channels',
+      },
+      {
+        id: 'iptv-org-shop',
+        name: 'IPTV-Org Shop',
+        url: 'https://iptv-org.github.io/iptv/categories/shop.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org shop channels',
+      },
+      {
+        id: 'iptv-org-sports',
+        name: 'IPTV-Org Sports',
+        url: 'https://iptv-org.github.io/iptv/categories/sports.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org sports channels',
+      },
+      {
+        id: 'iptv-org-travel',
+        name: 'IPTV-Org Travel',
+        url: 'https://iptv-org.github.io/iptv/categories/travel.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org travel channels',
+      },
+      {
+        id: 'iptv-org-weather',
+        name: 'IPTV-Org Weather',
+        url: 'https://iptv-org.github.io/iptv/categories/weather.m3u',
+        country: 'Global',
+        countryCode: 'GL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org weather channels',
+      },
+      {
+        id: 'iptv-org-af',
+        name: 'IPTV-Org Afghanistan',
+        url: 'https://iptv-org.github.io/iptv/countries/af.m3u',
+        country: 'Afghanistan',
+        countryCode: 'AF',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Afghanistan',
+      },
+      {
+        id: 'iptv-org-al',
+        name: 'IPTV-Org Albania',
+        url: 'https://iptv-org.github.io/iptv/countries/al.m3u',
+        country: 'Albania',
+        countryCode: 'AL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Albania',
+      },
+      {
+        id: 'iptv-org-dz',
+        name: 'IPTV-Org Algeria',
+        url: 'https://iptv-org.github.io/iptv/countries/dz.m3u',
+        country: 'Algeria',
+        countryCode: 'DZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Algeria',
+      },
+      {
+        id: 'iptv-org-ad',
+        name: 'IPTV-Org Andorra',
+        url: 'https://iptv-org.github.io/iptv/countries/ad.m3u',
+        country: 'Andorra',
+        countryCode: 'AD',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Andorra',
+      },
+      {
+        id: 'iptv-org-ar',
+        name: 'IPTV-Org Argentina',
+        url: 'https://iptv-org.github.io/iptv/countries/ar.m3u',
+        country: 'Argentina',
+        countryCode: 'AR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Argentina',
+      },
+      {
+        id: 'iptv-org-am',
+        name: 'IPTV-Org Armenia',
+        url: 'https://iptv-org.github.io/iptv/countries/am.m3u',
+        country: 'Armenia',
+        countryCode: 'AM',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Armenia',
+      },
+      {
+        id: 'iptv-org-aw',
+        name: 'IPTV-Org Aruba',
+        url: 'https://iptv-org.github.io/iptv/countries/aw.m3u',
+        country: 'Aruba',
+        countryCode: 'AW',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Aruba',
+      },
+      {
+        id: 'iptv-org-au',
+        name: 'IPTV-Org Australia',
+        url: 'https://iptv-org.github.io/iptv/countries/au.m3u',
+        country: 'Australia',
+        countryCode: 'AU',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Australia',
+      },
+      {
+        id: 'iptv-org-at',
+        name: 'IPTV-Org Austria',
+        url: 'https://iptv-org.github.io/iptv/countries/at.m3u',
+        country: 'Austria',
+        countryCode: 'AT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Austria',
+      },
+      {
+        id: 'iptv-org-az',
+        name: 'IPTV-Org Azerbaijan',
+        url: 'https://iptv-org.github.io/iptv/countries/az.m3u',
+        country: 'Azerbaijan',
+        countryCode: 'AZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Azerbaijan',
+      },
+      {
+        id: 'iptv-org-bs',
+        name: 'IPTV-Org Bahamas',
+        url: 'https://iptv-org.github.io/iptv/countries/bs.m3u',
+        country: 'Bahamas',
+        countryCode: 'BS',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bahamas',
+      },
+      {
+        id: 'iptv-org-bh',
+        name: 'IPTV-Org Bahrain',
+        url: 'https://iptv-org.github.io/iptv/countries/bh.m3u',
+        country: 'Bahrain',
+        countryCode: 'BH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bahrain',
+      },
+      {
+        id: 'iptv-org-bd',
+        name: 'IPTV-Org Bangladesh',
+        url: 'https://iptv-org.github.io/iptv/countries/bd.m3u',
+        country: 'Bangladesh',
+        countryCode: 'BD',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bangladesh',
+      },
+      {
+        id: 'iptv-org-bb',
+        name: 'IPTV-Org Barbados',
+        url: 'https://iptv-org.github.io/iptv/countries/bb.m3u',
+        country: 'Barbados',
+        countryCode: 'BB',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Barbados',
+      },
+      {
+        id: 'iptv-org-by',
+        name: 'IPTV-Org Belarus',
+        url: 'https://iptv-org.github.io/iptv/countries/by.m3u',
+        country: 'Belarus',
+        countryCode: 'BY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Belarus',
+      },
+      {
+        id: 'iptv-org-be',
+        name: 'IPTV-Org Belgium',
+        url: 'https://iptv-org.github.io/iptv/countries/be.m3u',
+        country: 'Belgium',
+        countryCode: 'BE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Belgium',
+      },
+      {
+        id: 'iptv-org-bz',
+        name: 'IPTV-Org Belize',
+        url: 'https://iptv-org.github.io/iptv/countries/bz.m3u',
+        country: 'Belize',
+        countryCode: 'BZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Belize',
+      },
+      {
+        id: 'iptv-org-bj',
+        name: 'IPTV-Org Benin',
+        url: 'https://iptv-org.github.io/iptv/countries/bj.m3u',
+        country: 'Benin',
+        countryCode: 'BJ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Benin',
+      },
+      {
+        id: 'iptv-org-bo',
+        name: 'IPTV-Org Bolivia',
+        url: 'https://iptv-org.github.io/iptv/countries/bo.m3u',
+        country: 'Bolivia',
+        countryCode: 'BO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bolivia',
+      },
+      {
+        id: 'iptv-org-ba',
+        name: 'IPTV-Org Bosnia and Herzegovina',
+        url: 'https://iptv-org.github.io/iptv/countries/ba.m3u',
+        country: 'Bosnia and Herzegovina',
+        countryCode: 'BA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bosnia and Herzegovina',
+      },
+      {
+        id: 'iptv-org-br',
+        name: 'IPTV-Org Brazil',
+        url: 'https://iptv-org.github.io/iptv/countries/br.m3u',
+        country: 'Brazil',
+        countryCode: 'BR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Brazil',
+      },
+      {
+        id: 'iptv-org-bg',
+        name: 'IPTV-Org Bulgaria',
+        url: 'https://iptv-org.github.io/iptv/countries/bg.m3u',
+        country: 'Bulgaria',
+        countryCode: 'BG',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Bulgaria',
+      },
+      {
+        id: 'iptv-org-kh',
+        name: 'IPTV-Org Cambodia',
+        url: 'https://iptv-org.github.io/iptv/countries/kh.m3u',
+        country: 'Cambodia',
+        countryCode: 'KH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Cambodia',
+      },
+      {
+        id: 'iptv-org-ca',
+        name: 'IPTV-Org Canada',
+        url: 'https://iptv-org.github.io/iptv/countries/ca.m3u',
+        country: 'Canada',
+        countryCode: 'CA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Canada',
+      },
+      {
+        id: 'iptv-org-cv',
+        name: 'IPTV-Org Cape Verde',
+        url: 'https://iptv-org.github.io/iptv/countries/cv.m3u',
+        country: 'Cape Verde',
+        countryCode: 'CV',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Cape Verde',
+      },
+      {
+        id: 'iptv-org-ky',
+        name: 'IPTV-Org Cayman Islands',
+        url: 'https://iptv-org.github.io/iptv/countries/ky.m3u',
+        country: 'Cayman Islands',
+        countryCode: 'KY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Cayman Islands',
+      },
+      {
+        id: 'iptv-org-cl',
+        name: 'IPTV-Org Chile',
+        url: 'https://iptv-org.github.io/iptv/countries/cl.m3u',
+        country: 'Chile',
+        countryCode: 'CL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Chile',
+      },
+      {
+        id: 'iptv-org-cn',
+        name: 'IPTV-Org China',
+        url: 'https://iptv-org.github.io/iptv/countries/cn.m3u',
+        country: 'China',
+        countryCode: 'CN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from China',
+      },
+      {
+        id: 'iptv-org-co',
+        name: 'IPTV-Org Colombia',
+        url: 'https://iptv-org.github.io/iptv/countries/co.m3u',
+        country: 'Colombia',
+        countryCode: 'CO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Colombia',
+      },
+      {
+        id: 'iptv-org-cr',
+        name: 'IPTV-Org Costa Rica',
+        url: 'https://iptv-org.github.io/iptv/countries/cr.m3u',
+        country: 'Costa Rica',
+        countryCode: 'CR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Costa Rica',
+      },
+      {
+        id: 'iptv-org-hr',
+        name: 'IPTV-Org Croatia',
+        url: 'https://iptv-org.github.io/iptv/countries/hr.m3u',
+        country: 'Croatia',
+        countryCode: 'HR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Croatia',
+      },
+      {
+        id: 'iptv-org-cu',
+        name: 'IPTV-Org Cuba',
+        url: 'https://iptv-org.github.io/iptv/countries/cu.m3u',
+        country: 'Cuba',
+        countryCode: 'CU',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Cuba',
+      },
+      {
+        id: 'iptv-org-cw',
+        name: 'IPTV-Org Curaçao',
+        url: 'https://iptv-org.github.io/iptv/countries/cw.m3u',
+        country: 'Curaçao',
+        countryCode: 'CW',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Curaçao',
+      },
+      {
+        id: 'iptv-org-cy',
+        name: 'IPTV-Org Cyprus',
+        url: 'https://iptv-org.github.io/iptv/countries/cy.m3u',
+        country: 'Cyprus',
+        countryCode: 'CY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Cyprus',
+      },
+      {
+        id: 'iptv-org-cz',
+        name: 'IPTV-Org Czech Republic',
+        url: 'https://iptv-org.github.io/iptv/countries/cz.m3u',
+        country: 'Czech Republic',
+        countryCode: 'CZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Czech Republic',
+      },
+      {
+        id: 'iptv-org-dk',
+        name: 'IPTV-Org Denmark',
+        url: 'https://iptv-org.github.io/iptv/countries/dk.m3u',
+        country: 'Denmark',
+        countryCode: 'DK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Denmark',
+      },
+      {
+        id: 'iptv-org-do',
+        name: 'IPTV-Org Dominican Republic',
+        url: 'https://iptv-org.github.io/iptv/countries/do.m3u',
+        country: 'Dominican Republic',
+        countryCode: 'DO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Dominican Republic',
+      },
+      {
+        id: 'iptv-org-ec',
+        name: 'IPTV-Org Ecuador',
+        url: 'https://iptv-org.github.io/iptv/countries/ec.m3u',
+        country: 'Ecuador',
+        countryCode: 'EC',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Ecuador',
+      },
+      {
+        id: 'iptv-org-eg',
+        name: 'IPTV-Org Egypt',
+        url: 'https://iptv-org.github.io/iptv/countries/eg.m3u',
+        country: 'Egypt',
+        countryCode: 'EG',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Egypt',
+      },
+      {
+        id: 'iptv-org-sv',
+        name: 'IPTV-Org El Salvador',
+        url: 'https://iptv-org.github.io/iptv/countries/sv.m3u',
+        country: 'El Salvador',
+        countryCode: 'SV',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from El Salvador',
+      },
+      {
+        id: 'iptv-org-ee',
+        name: 'IPTV-Org Estonia',
+        url: 'https://iptv-org.github.io/iptv/countries/ee.m3u',
+        country: 'Estonia',
+        countryCode: 'EE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Estonia',
+      },
+      {
+        id: 'iptv-org-et',
+        name: 'IPTV-Org Ethiopia',
+        url: 'https://iptv-org.github.io/iptv/countries/et.m3u',
+        country: 'Ethiopia',
+        countryCode: 'ET',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Ethiopia',
+      },
+      {
+        id: 'iptv-org-fi',
+        name: 'IPTV-Org Finland',
+        url: 'https://iptv-org.github.io/iptv/countries/fi.m3u',
+        country: 'Finland',
+        countryCode: 'FI',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Finland',
+      },
+      {
+        id: 'iptv-org-fr',
+        name: 'IPTV-Org France',
+        url: 'https://iptv-org.github.io/iptv/countries/fr.m3u',
+        country: 'France',
+        countryCode: 'FR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from France',
+      },
+      {
+        id: 'iptv-org-ge',
+        name: 'IPTV-Org Georgia',
+        url: 'https://iptv-org.github.io/iptv/countries/ge.m3u',
+        country: 'Georgia',
+        countryCode: 'GE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Georgia',
+      },
+      {
+        id: 'iptv-org-de',
+        name: 'IPTV-Org Germany',
+        url: 'https://iptv-org.github.io/iptv/countries/de.m3u',
+        country: 'Germany',
+        countryCode: 'DE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Germany',
+      },
+      {
+        id: 'iptv-org-gh',
+        name: 'IPTV-Org Ghana',
+        url: 'https://iptv-org.github.io/iptv/countries/gh.m3u',
+        country: 'Ghana',
+        countryCode: 'GH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Ghana',
+      },
+      {
+        id: 'iptv-org-gr',
+        name: 'IPTV-Org Greece',
+        url: 'https://iptv-org.github.io/iptv/countries/gr.m3u',
+        country: 'Greece',
+        countryCode: 'GR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Greece',
+      },
+      {
+        id: 'iptv-org-gt',
+        name: 'IPTV-Org Guatemala',
+        url: 'https://iptv-org.github.io/iptv/countries/gt.m3u',
+        country: 'Guatemala',
+        countryCode: 'GT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Guatemala',
+      },
+      {
+        id: 'iptv-org-ht',
+        name: 'IPTV-Org Haiti',
+        url: 'https://iptv-org.github.io/iptv/countries/ht.m3u',
+        country: 'Haiti',
+        countryCode: 'HT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Haiti',
+      },
+      {
+        id: 'iptv-org-hn',
+        name: 'IPTV-Org Honduras',
+        url: 'https://iptv-org.github.io/iptv/countries/hn.m3u',
+        country: 'Honduras',
+        countryCode: 'HN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Honduras',
+      },
+      {
+        id: 'iptv-org-hk',
+        name: 'IPTV-Org Hong Kong',
+        url: 'https://iptv-org.github.io/iptv/countries/hk.m3u',
+        country: 'Hong Kong',
+        countryCode: 'HK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Hong Kong',
+      },
+      {
+        id: 'iptv-org-hu',
+        name: 'IPTV-Org Hungary',
+        url: 'https://iptv-org.github.io/iptv/countries/hu.m3u',
+        country: 'Hungary',
+        countryCode: 'HU',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Hungary',
+      },
+      {
+        id: 'iptv-org-is',
+        name: 'IPTV-Org Iceland',
+        url: 'https://iptv-org.github.io/iptv/countries/is.m3u',
+        country: 'Iceland',
+        countryCode: 'IS',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Iceland',
+      },
+      {
+        id: 'iptv-org-in',
+        name: 'IPTV-Org India',
+        url: 'https://iptv-org.github.io/iptv/countries/in.m3u',
+        country: 'India',
+        countryCode: 'IN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from India',
+      },
+      {
+        id: 'iptv-org-id',
+        name: 'IPTV-Org Indonesia',
+        url: 'https://iptv-org.github.io/iptv/countries/id.m3u',
+        country: 'Indonesia',
+        countryCode: 'ID',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Indonesia',
+      },
+      {
+        id: 'iptv-org-ir',
+        name: 'IPTV-Org Iran',
+        url: 'https://iptv-org.github.io/iptv/countries/ir.m3u',
+        country: 'Iran',
+        countryCode: 'IR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Iran',
+      },
+      {
+        id: 'iptv-org-iq',
+        name: 'IPTV-Org Iraq',
+        url: 'https://iptv-org.github.io/iptv/countries/iq.m3u',
+        country: 'Iraq',
+        countryCode: 'IQ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Iraq',
+      },
+      {
+        id: 'iptv-org-ie',
+        name: 'IPTV-Org Ireland',
+        url: 'https://iptv-org.github.io/iptv/countries/ie.m3u',
+        country: 'Ireland',
+        countryCode: 'IE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Ireland',
+      },
+      {
+        id: 'iptv-org-il',
+        name: 'IPTV-Org Israel',
+        url: 'https://iptv-org.github.io/iptv/countries/il.m3u',
+        country: 'Israel',
+        countryCode: 'IL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Israel',
+      },
+      {
+        id: 'iptv-org-it',
+        name: 'IPTV-Org Italy',
+        url: 'https://iptv-org.github.io/iptv/countries/it.m3u',
+        country: 'Italy',
+        countryCode: 'IT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Italy',
+      },
+      {
+        id: 'iptv-org-jm',
+        name: 'IPTV-Org Jamaica',
+        url: 'https://iptv-org.github.io/iptv/countries/jm.m3u',
+        country: 'Jamaica',
+        countryCode: 'JM',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Jamaica',
+      },
+      {
+        id: 'iptv-org-jp',
+        name: 'IPTV-Org Japan',
+        url: 'https://iptv-org.github.io/iptv/countries/jp.m3u',
+        country: 'Japan',
+        countryCode: 'JP',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Japan',
+      },
+      {
+        id: 'iptv-org-jo',
+        name: 'IPTV-Org Jordan',
+        url: 'https://iptv-org.github.io/iptv/countries/jo.m3u',
+        country: 'Jordan',
+        countryCode: 'JO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Jordan',
+      },
+      {
+        id: 'iptv-org-kz',
+        name: 'IPTV-Org Kazakhstan',
+        url: 'https://iptv-org.github.io/iptv/countries/kz.m3u',
+        country: 'Kazakhstan',
+        countryCode: 'KZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Kazakhstan',
+      },
+      {
+        id: 'iptv-org-ke',
+        name: 'IPTV-Org Kenya',
+        url: 'https://iptv-org.github.io/iptv/countries/ke.m3u',
+        country: 'Kenya',
+        countryCode: 'KE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Kenya',
+      },
+      {
+        id: 'iptv-org-kw',
+        name: 'IPTV-Org Kuwait',
+        url: 'https://iptv-org.github.io/iptv/countries/kw.m3u',
+        country: 'Kuwait',
+        countryCode: 'KW',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Kuwait',
+      },
+      {
+        id: 'iptv-org-lv',
+        name: 'IPTV-Org Latvia',
+        url: 'https://iptv-org.github.io/iptv/countries/lv.m3u',
+        country: 'Latvia',
+        countryCode: 'LV',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Latvia',
+      },
+      {
+        id: 'iptv-org-lb',
+        name: 'IPTV-Org Lebanon',
+        url: 'https://iptv-org.github.io/iptv/countries/lb.m3u',
+        country: 'Lebanon',
+        countryCode: 'LB',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Lebanon',
+      },
+      {
+        id: 'iptv-org-ly',
+        name: 'IPTV-Org Libya',
+        url: 'https://iptv-org.github.io/iptv/countries/ly.m3u',
+        country: 'Libya',
+        countryCode: 'LY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Libya',
+      },
+      {
+        id: 'iptv-org-lt',
+        name: 'IPTV-Org Lithuania',
+        url: 'https://iptv-org.github.io/iptv/countries/lt.m3u',
+        country: 'Lithuania',
+        countryCode: 'LT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Lithuania',
+      },
+      {
+        id: 'iptv-org-lu',
+        name: 'IPTV-Org Luxembourg',
+        url: 'https://iptv-org.github.io/iptv/countries/lu.m3u',
+        country: 'Luxembourg',
+        countryCode: 'LU',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Luxembourg',
+      },
+      {
+        id: 'iptv-org-mk',
+        name: 'IPTV-Org North Macedonia',
+        url: 'https://iptv-org.github.io/iptv/countries/mk.m3u',
+        country: 'North Macedonia',
+        countryCode: 'MK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from North Macedonia',
+      },
+      {
+        id: 'iptv-org-my',
+        name: 'IPTV-Org Malaysia',
+        url: 'https://iptv-org.github.io/iptv/countries/my.m3u',
+        country: 'Malaysia',
+        countryCode: 'MY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Malaysia',
+      },
+      {
+        id: 'iptv-org-mt',
+        name: 'IPTV-Org Malta',
+        url: 'https://iptv-org.github.io/iptv/countries/mt.m3u',
+        country: 'Malta',
+        countryCode: 'MT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Malta',
+      },
+      {
+        id: 'iptv-org-mx',
+        name: 'IPTV-Org Mexico',
+        url: 'https://iptv-org.github.io/iptv/countries/mx.m3u',
+        country: 'Mexico',
+        countryCode: 'MX',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Mexico',
+      },
+      {
+        id: 'iptv-org-md',
+        name: 'IPTV-Org Moldova',
+        url: 'https://iptv-org.github.io/iptv/countries/md.m3u',
+        country: 'Moldova',
+        countryCode: 'MD',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Moldova',
+      },
+      {
+        id: 'iptv-org-mn',
+        name: 'IPTV-Org Mongolia',
+        url: 'https://iptv-org.github.io/iptv/countries/mn.m3u',
+        country: 'Mongolia',
+        countryCode: 'MN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Mongolia',
+      },
+      {
+        id: 'iptv-org-me',
+        name: 'IPTV-Org Montenegro',
+        url: 'https://iptv-org.github.io/iptv/countries/me.m3u',
+        country: 'Montenegro',
+        countryCode: 'ME',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Montenegro',
+      },
+      {
+        id: 'iptv-org-ma',
+        name: 'IPTV-Org Morocco',
+        url: 'https://iptv-org.github.io/iptv/countries/ma.m3u',
+        country: 'Morocco',
+        countryCode: 'MA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Morocco',
+      },
+      {
+        id: 'iptv-org-np',
+        name: 'IPTV-Org Nepal',
+        url: 'https://iptv-org.github.io/iptv/countries/np.m3u',
+        country: 'Nepal',
+        countryCode: 'NP',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Nepal',
+      },
+      {
+        id: 'iptv-org-nl',
+        name: 'IPTV-Org Netherlands',
+        url: 'https://iptv-org.github.io/iptv/countries/nl.m3u',
+        country: 'Netherlands',
+        countryCode: 'NL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Netherlands',
+      },
+      {
+        id: 'iptv-org-nz',
+        name: 'IPTV-Org New Zealand',
+        url: 'https://iptv-org.github.io/iptv/countries/nz.m3u',
+        country: 'New Zealand',
+        countryCode: 'NZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from New Zealand',
+      },
+      {
+        id: 'iptv-org-ni',
+        name: 'IPTV-Org Nicaragua',
+        url: 'https://iptv-org.github.io/iptv/countries/ni.m3u',
+        country: 'Nicaragua',
+        countryCode: 'NI',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Nicaragua',
+      },
+      {
+        id: 'iptv-org-ng',
+        name: 'IPTV-Org Nigeria',
+        url: 'https://iptv-org.github.io/iptv/countries/ng.m3u',
+        country: 'Nigeria',
+        countryCode: 'NG',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Nigeria',
+      },
+      {
+        id: 'iptv-org-kp',
+        name: 'IPTV-Org North Korea',
+        url: 'https://iptv-org.github.io/iptv/countries/kp.m3u',
+        country: 'North Korea',
+        countryCode: 'KP',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from North Korea',
+      },
+      {
+        id: 'iptv-org-no',
+        name: 'IPTV-Org Norway',
+        url: 'https://iptv-org.github.io/iptv/countries/no.m3u',
+        country: 'Norway',
+        countryCode: 'NO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Norway',
+      },
+      {
+        id: 'iptv-org-pk',
+        name: 'IPTV-Org Pakistan',
+        url: 'https://iptv-org.github.io/iptv/countries/pk.m3u',
+        country: 'Pakistan',
+        countryCode: 'PK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Pakistan',
+      },
+      {
+        id: 'iptv-org-ps',
+        name: 'IPTV-Org Palestine',
+        url: 'https://iptv-org.github.io/iptv/countries/ps.m3u',
+        country: 'Palestine',
+        countryCode: 'PS',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Palestine',
+      },
+      {
+        id: 'iptv-org-pa',
+        name: 'IPTV-Org Panama',
+        url: 'https://iptv-org.github.io/iptv/countries/pa.m3u',
+        country: 'Panama',
+        countryCode: 'PA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Panama',
+      },
+      {
+        id: 'iptv-org-py',
+        name: 'IPTV-Org Paraguay',
+        url: 'https://iptv-org.github.io/iptv/countries/py.m3u',
+        country: 'Paraguay',
+        countryCode: 'PY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Paraguay',
+      },
+      {
+        id: 'iptv-org-pe',
+        name: 'IPTV-Org Peru',
+        url: 'https://iptv-org.github.io/iptv/countries/pe.m3u',
+        country: 'Peru',
+        countryCode: 'PE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Peru',
+      },
+      {
+        id: 'iptv-org-ph',
+        name: 'IPTV-Org Philippines',
+        url: 'https://iptv-org.github.io/iptv/countries/ph.m3u',
+        country: 'Philippines',
+        countryCode: 'PH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Philippines',
+      },
+      {
+        id: 'iptv-org-pl',
+        name: 'IPTV-Org Poland',
+        url: 'https://iptv-org.github.io/iptv/countries/pl.m3u',
+        country: 'Poland',
+        countryCode: 'PL',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Poland',
+      },
+      {
+        id: 'iptv-org-pt',
+        name: 'IPTV-Org Portugal',
+        url: 'https://iptv-org.github.io/iptv/countries/pt.m3u',
+        country: 'Portugal',
+        countryCode: 'PT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Portugal',
+      },
+      {
+        id: 'iptv-org-qa',
+        name: 'IPTV-Org Qatar',
+        url: 'https://iptv-org.github.io/iptv/countries/qa.m3u',
+        country: 'Qatar',
+        countryCode: 'QA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Qatar',
+      },
+      {
+        id: 'iptv-org-ro',
+        name: 'IPTV-Org Romania',
+        url: 'https://iptv-org.github.io/iptv/countries/ro.m3u',
+        country: 'Romania',
+        countryCode: 'RO',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Romania',
+      },
+      {
+        id: 'iptv-org-ru',
+        name: 'IPTV-Org Russia',
+        url: 'https://iptv-org.github.io/iptv/countries/ru.m3u',
+        country: 'Russia',
+        countryCode: 'RU',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Russia',
+      },
+      {
+        id: 'iptv-org-sa',
+        name: 'IPTV-Org Saudi Arabia',
+        url: 'https://iptv-org.github.io/iptv/countries/sa.m3u',
+        country: 'Saudi Arabia',
+        countryCode: 'SA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Saudi Arabia',
+      },
+      {
+        id: 'iptv-org-sn',
+        name: 'IPTV-Org Senegal',
+        url: 'https://iptv-org.github.io/iptv/countries/sn.m3u',
+        country: 'Senegal',
+        countryCode: 'SN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Senegal',
+      },
+      {
+        id: 'iptv-org-rs',
+        name: 'IPTV-Org Serbia',
+        url: 'https://iptv-org.github.io/iptv/countries/rs.m3u',
+        country: 'Serbia',
+        countryCode: 'RS',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Serbia',
+      },
+      {
+        id: 'iptv-org-sg',
+        name: 'IPTV-Org Singapore',
+        url: 'https://iptv-org.github.io/iptv/countries/sg.m3u',
+        country: 'Singapore',
+        countryCode: 'SG',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Singapore',
+      },
+      {
+        id: 'iptv-org-sk',
+        name: 'IPTV-Org Slovakia',
+        url: 'https://iptv-org.github.io/iptv/countries/sk.m3u',
+        country: 'Slovakia',
+        countryCode: 'SK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Slovakia',
+      },
+      {
+        id: 'iptv-org-si',
+        name: 'IPTV-Org Slovenia',
+        url: 'https://iptv-org.github.io/iptv/countries/si.m3u',
+        country: 'Slovenia',
+        countryCode: 'SI',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Slovenia',
+      },
+      {
+        id: 'iptv-org-za',
+        name: 'IPTV-Org South Africa',
+        url: 'https://iptv-org.github.io/iptv/countries/za.m3u',
+        country: 'South Africa',
+        countryCode: 'ZA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from South Africa',
+      },
+      {
+        id: 'iptv-org-kr',
+        name: 'IPTV-Org South Korea',
+        url: 'https://iptv-org.github.io/iptv/countries/kr.m3u',
+        country: 'South Korea',
+        countryCode: 'KR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from South Korea',
+      },
+      {
+        id: 'iptv-org-es',
+        name: 'IPTV-Org Spain',
+        url: 'https://iptv-org.github.io/iptv/countries/es.m3u',
+        country: 'Spain',
+        countryCode: 'ES',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Spain',
+      },
+      {
+        id: 'iptv-org-lk',
+        name: 'IPTV-Org Sri Lanka',
+        url: 'https://iptv-org.github.io/iptv/countries/lk.m3u',
+        country: 'Sri Lanka',
+        countryCode: 'LK',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Sri Lanka',
+      },
+      {
+        id: 'iptv-org-sd',
+        name: 'IPTV-Org Sudan',
+        url: 'https://iptv-org.github.io/iptv/countries/sd.m3u',
+        country: 'Sudan',
+        countryCode: 'SD',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Sudan',
+      },
+      {
+        id: 'iptv-org-se',
+        name: 'IPTV-Org Sweden',
+        url: 'https://iptv-org.github.io/iptv/countries/se.m3u',
+        country: 'Sweden',
+        countryCode: 'SE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Sweden',
+      },
+      {
+        id: 'iptv-org-ch',
+        name: 'IPTV-Org Switzerland',
+        url: 'https://iptv-org.github.io/iptv/countries/ch.m3u',
+        country: 'Switzerland',
+        countryCode: 'CH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Switzerland',
+      },
+      {
+        id: 'iptv-org-sy',
+        name: 'IPTV-Org Syria',
+        url: 'https://iptv-org.github.io/iptv/countries/sy.m3u',
+        country: 'Syria',
+        countryCode: 'SY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Syria',
+      },
+      {
+        id: 'iptv-org-tw',
+        name: 'IPTV-Org Taiwan',
+        url: 'https://iptv-org.github.io/iptv/countries/tw.m3u',
+        country: 'Taiwan',
+        countryCode: 'TW',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Taiwan',
+      },
+      {
+        id: 'iptv-org-tz',
+        name: 'IPTV-Org Tanzania',
+        url: 'https://iptv-org.github.io/iptv/countries/tz.m3u',
+        country: 'Tanzania',
+        countryCode: 'TZ',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Tanzania',
+      },
+      {
+        id: 'iptv-org-th',
+        name: 'IPTV-Org Thailand',
+        url: 'https://iptv-org.github.io/iptv/countries/th.m3u',
+        country: 'Thailand',
+        countryCode: 'TH',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Thailand',
+      },
+      {
+        id: 'iptv-org-tt',
+        name: 'IPTV-Org Trinidad and Tobago',
+        url: 'https://iptv-org.github.io/iptv/countries/tt.m3u',
+        country: 'Trinidad and Tobago',
+        countryCode: 'TT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Trinidad and Tobago',
+      },
+      {
+        id: 'iptv-org-tn',
+        name: 'IPTV-Org Tunisia',
+        url: 'https://iptv-org.github.io/iptv/countries/tn.m3u',
+        country: 'Tunisia',
+        countryCode: 'TN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Tunisia',
+      },
+      {
+        id: 'iptv-org-tr',
+        name: 'IPTV-Org Turkey',
+        url: 'https://iptv-org.github.io/iptv/countries/tr.m3u',
+        country: 'Turkey',
+        countryCode: 'TR',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Turkey',
+      },
+      {
+        id: 'iptv-org-ug',
+        name: 'IPTV-Org Uganda',
+        url: 'https://iptv-org.github.io/iptv/countries/ug.m3u',
+        country: 'Uganda',
+        countryCode: 'UG',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Uganda',
+      },
+      {
+        id: 'iptv-org-ua',
+        name: 'IPTV-Org Ukraine',
+        url: 'https://iptv-org.github.io/iptv/countries/ua.m3u',
+        country: 'Ukraine',
+        countryCode: 'UA',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Ukraine',
+      },
+      {
+        id: 'iptv-org-ae',
+        name: 'IPTV-Org United Arab Emirates',
+        url: 'https://iptv-org.github.io/iptv/countries/ae.m3u',
+        country: 'United Arab Emirates',
+        countryCode: 'AE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from United Arab Emirates',
+      },
+      {
+        id: 'iptv-org-gb',
+        name: 'IPTV-Org United Kingdom',
+        url: 'https://iptv-org.github.io/iptv/countries/gb.m3u',
+        country: 'United Kingdom',
+        countryCode: 'GB',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from United Kingdom',
+      },
+      {
+        id: 'iptv-org-us',
+        name: 'IPTV-Org United States',
+        url: 'https://iptv-org.github.io/iptv/countries/us.m3u',
+        country: 'United States',
+        countryCode: 'US',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from United States',
+      },
+      {
+        id: 'iptv-org-uy',
+        name: 'IPTV-Org Uruguay',
+        url: 'https://iptv-org.github.io/iptv/countries/uy.m3u',
+        country: 'Uruguay',
+        countryCode: 'UY',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Uruguay',
+      },
+      {
+        id: 'iptv-org-ve',
+        name: 'IPTV-Org Venezuela',
+        url: 'https://iptv-org.github.io/iptv/countries/ve.m3u',
+        country: 'Venezuela',
+        countryCode: 'VE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Venezuela',
+      },
+      {
+        id: 'iptv-org-vn',
+        name: 'IPTV-Org Vietnam',
+        url: 'https://iptv-org.github.io/iptv/countries/vn.m3u',
+        country: 'Vietnam',
+        countryCode: 'VN',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Vietnam',
+      },
+      {
+        id: 'iptv-org-ye',
+        name: 'IPTV-Org Yemen',
+        url: 'https://iptv-org.github.io/iptv/countries/ye.m3u',
+        country: 'Yemen',
+        countryCode: 'YE',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Yemen',
+      },
+      {
+        id: 'iptv-org-zw',
+        name: 'IPTV-Org Zimbabwe',
+        url: 'https://iptv-org.github.io/iptv/countries/zw.m3u',
+        country: 'Zimbabwe',
+        countryCode: 'ZW',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels from Zimbabwe',
+      },
+      {
+        id: 'iptv-org-undefined',
+        name: 'IPTV-Org Undefined',
+        url: 'https://iptv-org.github.io/iptv/countries/undefined.m3u',
+        country: 'Undefined',
+        countryCode: 'XX',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org channels with undefined country',
+      },
+      {
+        id: 'iptv-org-int',
+        name: 'IPTV-Org International',
+        url: 'https://iptv-org.github.io/iptv/countries/int.m3u',
+        country: 'International',
+        countryCode: 'INT',
+        channels: 0,
+        enabled: false,
+        description: 'IPTV-Org international channels',
+      },
 
-    // Default channels (bisa diperluas)
-    getDefaultChannels() {
-        return [
-            // Indonesia
-            {
-                id: 'id-001',
-                name: 'Metro TV',
-                country: 'Indonesia',
-                countryCode: 'ID',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Metro_TV_%282019%29.svg/200px-Metro_TV_%282019%29.svg.png',
-                url: 'https://edge.medcom.id/live-edge/smil:metro.smil/playlist.m3u8',
-                status: 'unknown'
-            },
-            {
-                id: 'id-002',
-                name: 'Kompas TV',
-                country: 'Indonesia',
-                countryCode: 'ID',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/KompasTV_2017.svg/200px-KompasTV_2017.svg.png',
-                url: 'https://ythls.armelin.one/channel/UC5BMIWZe9isJXLZwIq0WvwA.m3u8',
-                status: 'unknown'
-            },
-            {
-                id: 'id-003',
-                name: 'TV One',
-                country: 'Indonesia',
-                countryCode: 'ID',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/TvOne_2023.svg/200px-TvOne_2023.svg.png',
-                url: 'https://ythls.armelin.one/channel/UCy5PTfSa26f1QWR4cRx8Wnw.m3u8',
-                status: 'unknown'
-            },
-            // USA
-            {
-                id: 'us-001',
-                name: 'ABC News',
-                country: 'United States',
-                countryCode: 'US',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/ABC_News.svg/200px-ABC_News.svg.png',
-                url: 'https://content.uplynk.com/channel/3324f2467c414329b3b0cc5cd987b6be.m3u8',
-                status: 'unknown'
-            },
-            {
-                id: 'us-002',
-                name: 'Bloomberg TV',
-                country: 'United States',
-                countryCode: 'US',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Bloomberg_Television_logo.svg/200px-Bloomberg_Television_logo.svg.png',
-                url: 'https://bloomberg.com/media-manifest/streams/us.m3u8',
-                status: 'unknown'
-            },
-            // UK
-            {
-                id: 'uk-001',
-                name: 'BBC News',
-                country: 'United Kingdom',
-                countryCode: 'GB',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/BBC_News_2019.svg/200px-BBC_News_2019.svg.png',
-                url: 'https://vs-hls-push-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news_channel_hd/t=3840/v=pv14/b=5070016/main.m3u8',
-                status: 'unknown'
-            },
-            // France
-            {
-                id: 'fr-001',
-                name: 'France 24',
-                country: 'France',
-                countryCode: 'FR',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/France24.svg/200px-France24.svg.png',
-                url: 'https://cdn.klowdtv.net/803B48A/n1.klowdtv.net/live1/france24_720p/playlist.m3u8',
-                status: 'unknown'
-            },
-            // Germany
-            {
-                id: 'de-001',
-                name: 'Deutsche Welle',
-                country: 'Germany',
-                countryCode: 'DE',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Deutsche_Welle_symbol_2012.svg/200px-Deutsche_Welle_symbol_2012.svg.png',
-                url: 'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8',
-                status: 'unknown'
-            },
-            // International
-            {
-                id: 'int-001',
-                name: 'Al Jazeera English',
-                country: 'Qatar',
-                countryCode: 'QA',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/71/Aljazeera.svg/200px-Aljazeera.svg.png',
-                url: 'https://live-hls-web-aje.getaj.net/AJE/index.m3u8',
-                status: 'unknown'
-            },
-            {
-                id: 'int-002',
-                name: 'CGTN',
-                country: 'China',
-                countryCode: 'CN',
-                category: 'news',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/CGTN.svg/200px-CGTN.svg.png',
-                url: 'https://english-livews.cgtn.com/hls/LSveOGBaBw41Ea7ukkVAUdKQ220802LSTexu6xAuFH8VZNBLE1ZNEa220802cd/playlist.m3u8',
-                status: 'unknown'
-            }
-        ];
-    }
+      // ========== ALTERNATIVE SOURCES ==========
+      {
+        id: 'free-tv-global',
+        name: 'Free-TV Global Playlist',
+        url: 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8',
+        country: 'International',
+        countryCode: 'INT',
+        channels: 0,
+        enabled: false,
+        description: 'Free-TV channels dari berbagai negara',
+      },
+      {
+        id: 'local-indonesia',
+        name: 'IPTV Indonesia Repository',
+        url: 'https://raw.githubusercontent.com/alfigusman1/IPTV-Indonesia/refs/heads/main/index.m3u',
+        country: 'Indonesia',
+        countryCode: 'CN',
+        channels: 0,
+        enabled: true,
+        description: 'Playlist lokal Indonesia dari repository community',
+      },
+    ];
+  }
 
-    // Save channels ke localStorage
-    saveChannels() {
-        localStorage.setItem('iptvChannels', JSON.stringify(this.channels));
-    }
+  // Save channels ke localStorage
+  saveChannels() {
+    localStorage.setItem('iptvChannels', JSON.stringify(this.channels));
+  }
 
-    // Import M3U playlist
-    async importM3U(content) {
-        const channels = this.parseM3U(content);
-        this.channels = [...this.channels, ...channels];
-        this.saveChannels();
-        return channels.length;
-    }
+  // Import M3U playlist
+  async importM3U(content) {
+    const channels = this.parseM3U(content);
+    this.channels = [...this.channels, ...channels];
+    this.saveChannels();
+    return channels.length;
+  }
 
-    // Parse M3U format
-    parseM3U(content) {
-        const channels = [];
-        const lines = content.split('\n');
-        let currentChannel = {};
+  // Parse M3U format
+  parseM3U(content) {
+    const channels = [];
+    const lines = content.split('\n');
+    let currentChannel = {};
 
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            
-            if (line.startsWith('#EXTINF:')) {
-                // Extract channel info
-                const nameMatch = line.match(/,(.+)$/);
-                const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                const countryMatch = line.match(/tvg-country="([^"]+)"/);
-                const categoryMatch = line.match(/group-title="([^"]+)"/);
-                
-                currentChannel = {
-                    id: 'custom-' + Date.now() + '-' + Math.random(),
-                    name: nameMatch ? nameMatch[1] : 'Unknown Channel',
-                    logo: logoMatch ? logoMatch[1] : null,
-                    country: countryMatch ? countryMatch[1] : 'Unknown',
-                    countryCode: 'XX',
-                    category: categoryMatch ? this.mapCategory(categoryMatch[1]) : 'general',
-                    status: 'unknown'
-                };
-            } else if (line && !line.startsWith('#') && currentChannel.name) {
-                currentChannel.url = line;
-                channels.push(currentChannel);
-                currentChannel = {};
-            }
-        }
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
 
-        return channels;
-    }
+      if (line.startsWith('#EXTINF:')) {
+        // Extract channel info
+        const nameMatch = line.match(/,(.+)$/);
+        const logoMatch = line.match(/tvg-logo="([^"]+)"/);
+        const countryMatch = line.match(/tvg-country="([^"]+)"/);
+        const categoryMatch = line.match(/group-title="([^"]+)"/);
 
-    // Map category dari M3U ke kategori standar
-    mapCategory(category) {
-        const categoryMap = {
-            'news': 'news',
-            'berita': 'news',
-            'entertainment': 'entertainment',
-            'hiburan': 'entertainment',
-            'sports': 'sports',
-            'olahraga': 'sports',
-            'music': 'music',
-            'musik': 'music',
-            'kids': 'kids',
-            'anak': 'kids',
-            'movies': 'movies',
-            'film': 'movies'
+        currentChannel = {
+          id: 'custom-' + Date.now() + '-' + Math.random(),
+          name: nameMatch ? nameMatch[1] : 'Unknown Channel',
+          logo: logoMatch ? logoMatch[1] : null,
+          country: countryMatch ? countryMatch[1] : 'Unknown',
+          countryCode: 'XX',
+          category: categoryMatch ? this.mapCategory(categoryMatch[1]) : 'general',
+          status: 'unknown',
         };
-
-        const lowerCategory = category.toLowerCase();
-        for (const [key, value] of Object.entries(categoryMap)) {
-            if (lowerCategory.includes(key)) {
-                return value;
-            }
-        }
-        return 'general';
+      } else if (line && !line.startsWith('#') && currentChannel.name) {
+        currentChannel.url = line;
+        channels.push(currentChannel);
+        currentChannel = {};
+      }
     }
 
-    // Favorites management
-    loadFavorites() {
-        const stored = localStorage.getItem('iptvFavorites');
-        return stored ? JSON.parse(stored) : [];
-    }
+    return channels;
+  }
 
-    saveFavorites() {
-        localStorage.setItem('iptvFavorites', JSON.stringify(this.favorites));
-    }
+  // Map category dari M3U ke kategori standar
+  mapCategory(category) {
+    const categoryMap = {
+      news: 'news',
+      berita: 'news',
+      entertainment: 'entertainment',
+      hiburan: 'entertainment',
+      sports: 'sports',
+      olahraga: 'sports',
+      music: 'music',
+      musik: 'music',
+      kids: 'kids',
+      anak: 'kids',
+      movies: 'movies',
+      film: 'movies',
+    };
 
-    toggleFavorite(channelId) {
-        const index = this.favorites.indexOf(channelId);
-        if (index > -1) {
-            this.favorites.splice(index, 1);
-        } else {
-            this.favorites.push(channelId);
-        }
-        this.saveFavorites();
-        return this.isFavorite(channelId);
+    const lowerCategory = category.toLowerCase();
+    for (const [key, value] of Object.entries(categoryMap)) {
+      if (lowerCategory.includes(key)) {
+        return value;
+      }
     }
+    return 'general';
+  }
 
-    isFavorite(channelId) {
-        return this.favorites.includes(channelId);
-    }
+  // Favorites management
+  loadFavorites() {
+    const stored = localStorage.getItem('iptvFavorites');
+    return stored ? JSON.parse(stored) : [];
+  }
 
-    // Filter channels
-    filterChannels(search = '', country = '', category = '') {
-        return this.channels.filter(channel => {
-            const matchSearch = !search || 
-                channel.name.toLowerCase().includes(search.toLowerCase());
-            const matchCountry = !country || 
-                channel.country === country;
-            const matchCategory = !category || 
-                channel.category === category;
-            
-            return matchSearch && matchCountry && matchCategory;
-        });
-    }
+  saveFavorites() {
+    localStorage.setItem('iptvFavorites', JSON.stringify(this.favorites));
+  }
 
-    // Get unique countries
-    getCountries() {
-        const countries = [...new Set(this.channels.map(ch => ch.country))];
-        return countries.sort();
+  toggleFavorite(channelId) {
+    const index = this.favorites.indexOf(channelId);
+    if (index > -1) {
+      this.favorites.splice(index, 1);
+    } else {
+      this.favorites.push(channelId);
     }
+    this.saveFavorites();
+    return this.isFavorite(channelId);
+  }
 
-    // Check channel status
-    async checkChannelStatus(channel) {
-        // Implementasi sederhana - bisa diperluas dengan HEAD request
-        return 'unknown';
-    }
+  isFavorite(channelId) {
+    return this.favorites.includes(channelId);
+  }
+
+  // Filter channels
+  filterChannels(search = '', country = '', category = '') {
+    return this.channels.filter(channel => {
+      const matchSearch = !search || channel.name.toLowerCase().includes(search.toLowerCase());
+      const matchCountry = !country || channel.country === country;
+      const matchCategory = !category || channel.category === category;
+
+      return matchSearch && matchCountry && matchCategory;
+    });
+  }
+
+  // Get unique countries
+  getCountries() {
+    const countries = [...new Set(this.channels.map(ch => ch.country))];
+    return countries.sort();
+  }
+
+  // Check channel status
+  async checkChannelStatus(channel) {
+    // Implementasi sederhana - bisa diperluas dengan HEAD request
+    return 'unknown';
+  }
 }
 
 // Export untuk digunakan di file lain
