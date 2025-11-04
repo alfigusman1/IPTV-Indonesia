@@ -30,7 +30,7 @@ const IPTV_CONFIG = {
   playlists: {
     // Indonesia
     'local-indonesia': {
-      name: 'IPTV Indonesia (Local)',
+      name: 'IPTV Indonesia',
       url: 'https://raw.githubusercontent.com/alfigusman1/IPTV-Indonesia/refs/heads/main/index.m3u',
       country: 'Indonesia',
       enabled: true,
@@ -38,17 +38,6 @@ const IPTV_CONFIG = {
       timeout: 15000, // 15 seconds
       description: 'Repository lokal Indonesia',
       tags: ['Indonesia', 'Local', 'Regional'],
-    },
-
-    'iptv-org-usa': {
-      name: 'IPTV-Org USA',
-      url: 'https://iptv-org.github.io/iptv/countries/us.m3u',
-      country: 'United States',
-      enabled: true,
-      priority: 5,
-      timeout: 20000,
-      description: 'USA channels from IPTV-Org',
-      tags: ['USA', 'International', 'English'],
     },
 
     'iptv-org-global': {
@@ -72,6 +61,17 @@ const IPTV_CONFIG = {
       timeout: 25000,
       description: 'Free-TV international channels',
       tags: ['Global', 'International', 'Mixed'],
+    },
+
+    'iptv-org-usa': {
+      name: 'IPTV-Org USA',
+      url: 'https://iptv-org.github.io/iptv/countries/us.m3u',
+      country: 'United States',
+      enabled: true,
+      priority: 5,
+      timeout: 20000,
+      description: 'USA channels from IPTV-Org',
+      tags: ['USA', 'International', 'English'],
     },
 
     // ============================================
