@@ -3,8 +3,14 @@
 #EXTINF:-1 tvg-id="RCTI.id" tvg-logo="https://static.epg.best/id/RCTI.id.png" tvg-country="ID" group-title="news",RCTI
 http://210.210.155.35/qwr9ew/s/s07/index1.m3u8
 
+#EXTINF:-1 tvg-id="RCTI.id" tvg-logo="https://static.epg.best/id/RCTI.id.png" tvg-country="ID" group-title="news",RCTI 2
+http://203.77.246.58:4500/udp/239.1.3.80:5000
+
 #EXTINF:-1 tvg-id="SCTV.id" tvg-logo="https://static.epg.best/id/SCTV.id.png" tvg-country="ID" group-title="news",SCTV
 https://cdn-livetv5.metube.id/hls/sctv_480/index.m3u8
+
+#EXTINF:-1 tvg-id="SCTV.id" tvg-logo="https://static.epg.best/id/SCTV.id.png" tvg-country="ID" group-title="news",SCTV 2
+http://203.77.246.58:4500/udp/239.1.1.108:5000
 
 #EXTINF:-1 tvg-id="Indosiar.id" tvg-logo="https://static.epg.best/id/Indosiar.id.png" tvg-country="ID" group-title="entertainment",Indosiar
 http://202.80.222.6/mnt/tmpfs/hls/001/001/ch15051810235326945512/1024.m3u8
@@ -12,11 +18,17 @@ http://202.80.222.6/mnt/tmpfs/hls/001/001/ch15051810235326945512/1024.m3u8
 #EXTINF:-1 tvg-id="Indosiar.id" tvg-logo="https://static.epg.best/id/Indosiar.id.png" tvg-country="ID" group-title="entertainment",Indosiar 2
 https://vcdn2.rctiplus.id/live/eds/indosiar_fta/live_fta/indosiar_fta-avc1_2000000=1-mp4a_64000_eng=2.m3u8
 
+#EXTINF:-1 tvg-id="Indosiar.id" tvg-logo="https://static.epg.best/id/Indosiar.id.png" tvg-country="ID" group-title="entertainment",Indosiar 3
+http://203.77.246.58:4500/udp/239.1.1.110:5000
+
 #EXTINF:-1 tvg-id="ANTV.id" tvg-logo="https://www.lyngsat.com/logo/tv/aa/antv_id.png" tvg-country="ID" group-title="entertainment",ANTV
 http://210.210.155.35/qwr9ew/s/s07/index1.m3u8
 
 #EXTINF:-1 tvg-id="MNCTV.id" tvg-logo="https://static.epg.best/id/MNCTV.id.png" tvg-country="ID" group-title="news",MNC TV
 https://vcdn2.rctiplus.id/live/eds/mnctv_fta/live_fta/mnctv_fta-avc1_2000000=1-mp4a_64000_eng=2.m3u8
+
+#EXTINF:-1 tvg-id="MNCTV.id" tvg-logo="https://static.epg.best/id/MNCTV.id.png" tvg-country="ID" group-title="news",MNC TV 2
+http://203.77.246.58:4500/udp/239.1.3.78:5000
 
 #EXTINF:-1 tvg-id="GlobalTV.id" tvg-logo="https://static.epg.best/id/GlobalTV.id.png" tvg-country="ID" group-title="entertainment",Global TV
 http://202.80.222.4/mnt/tmpfs/hls/001/001/ch14041511505498448705/1024.m3u8
@@ -48,101 +60,23 @@ http://210.210.155.35/qwr9ew/s/s09/index1.m3u8
 #EXTINF:-1 tvg-id="INews.id" tvg-logo="https://iptvsystem.my.id/img/inews.png" tvg-country="ID" group-title="news",INews
 https://streamo.web.id/api/1/get/live/tv/channel/17.mpd
 
-#EXTINF:-1 tvg-id="RCTI.id" tvg-logo="https://static.epg.best/id/RCTI.id.png" tvg-country="ID" group-title="entertainment",RCTI 2
-https://vcdn2.rctiplus.id/live/eds/rcti_fta/live_fta/rcti_fta-avc1_2000000=1-mp4a_64000_eng=2.m3u8
-
 #EXTINF:-1 tvg-id="TVRINasional.id" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="news",TVRI Nasional
 https://ott-balancer.tvri.go.id/live/eds/Nasional/hls/Nasional.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Aceh" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Aceh
-https://ott-balancer.tvri.go.id/live/eds/Aceh/hls/Aceh.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Bali" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Bali
-https://ott-balancer.tvri.go.id/live/eds/Bali/hls/Bali.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Jabar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Barat
-https://ott-balancer.tvri.go.id/live/eds/Jabar/hls/Jabar.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Jateng" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Tengah
-https://ott-balancer.tvri.go.id/live/eds/Jateng/hls/Jateng.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Jatim" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Timur
-https://ott-balancer.tvri.go.id/live/eds/Jatim/hls/Jatim.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.DKI" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI DKI Jakarta
-https://ott-balancer.tvri.go.id/live/eds/DKI/hls/DKI.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Lampung" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Lampung
-https://ott-balancer.tvri.go.id/live/eds/Lampung/hls/Lampung.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Riau" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Riau
-https://ott-balancer.tvri.go.id/live/eds/Riau/hls/Riau.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sumbar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Barat
-https://ott-balancer.tvri.go.id/live/eds/Sumbar/hls/Sumbar.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sumsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Selatan
-https://ott-balancer.tvri.go.id/live/eds/Sumsel/hls/Sumsel.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sumut" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Utara
-https://ott-balancer.tvri.go.id/live/eds/Sumut/hls/Sumut.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sulsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Selatan
-https://ott-balancer.tvri.go.id/live/eds/Sulsel/hls/Sulsel.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sultan" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Tengah
-https://ott-balancer.tvri.go.id/live/eds/Sulteng/hls/Sulteng.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sultra" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Tenggara
-https://ott-balancer.tvri.go.id/live/eds/Sultra/hls/Sultra.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Sulut" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Utara
-https://ott-balancer.tvri.go.id/live/eds/Sulut/hls/Sulut.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.NTB" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Nusa Tenggara Barat
-https://ott-balancer.tvri.go.id/live/eds/NTB/hls/NTB.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.NTT" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Nusa Tenggara Timur
-https://ott-balancer.tvri.go.id/live/eds/NTT/hls/NTT.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Papua" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Papua
-https://ott-balancer.tvri.go.id/live/eds/Papua/hls/Papua.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Kalbar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Barat
-https://ott-balancer.tvri.go.id/live/eds/Kalbar/hls/Kalbar.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Kalsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Selatan
-https://ott-balancer.tvri.go.id/live/eds/Kalsel/hls/Kalsel.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Kalteng" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Tengah
-https://ott-balancer.tvri.go.id/live/eds/Kalteng/hls/Kalteng.m3u8
-
-#EXTINF:-1 tvg-id="TVRI.Kaltim" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Timur
-https://ott-balancer.tvri.go.id/live/eds/Kaltim/hls/Kaltim.m3u8
-
-#EXTINF:-1 tvg-id="JakTV.id" tvg-logo="https://www.jaktv.co.id/assets/images/logo.png" tvg-country="ID" group-title="regional",Jak TV
-http://vod.linknetott.swiftcontent.com/Content/HLS/Live/Channel(ch392)/index.m3u8
-
-#EXTINF:-1 tvg-id="RajawaliTV.id" tvg-logo="https://rtv.co.id/assets/images/logo.png" tvg-country="ID" group-title="regional",Rajawali TV
-https://rtvstream.rtv.co.id:4555/hls/rtv.m3u8
 
 #EXTINF:-1 tvg-id="RRINet.id" tvg-logo="https://www.rri.co.id/assets/images/logo.png" tvg-country="ID" group-title="news",RRI Net
 https://private-streaming.rri.go.id/memfs/6f77c7b5-feb2-4935-9f89-e7e9fca0a54a_output_0.m3u8
 
-#EXTINF:-1 tvg-id="BaliTV.id" tvg-logo="https://balitv.id/wp-content/uploads/2020/04/logo-balitv.png" tvg-country="ID" group-title="regional",Bali TV
-https://cdn-telkomsel-01.akamaized.net/Content/HLS/Live/channel(8e867ae0-b2c0-4968-9f60-a11aee8c0987)/index.m3u8
+#EXTINF:-1 tvg-id="BTV.id" tvg-logo="https://www.beritasatu.com/assets/images/logo_btv.png" tvg-country="ID" group-title="news",Berita Satu
+https://b1news.beritasatumedia.com/Beritasatu/B1News_manifest.m3u8
 
-#EXTINF:-1 tvg-id="BandungTV.id" tvg-logo="https://e.siar.us/logo/bandungtv.png" tvg-country="ID" group-title="regional",Bandung TV
-http://202.150.153.254:65500/bandungtvWEBSITE.m3u8
+#EXTINF:-1 tvg-id="BTV.id" tvg-logo="https://www.beritasatu.com/assets/images/logo_btv.png" tvg-country="ID" group-title="news",BTV 2
+https://btv.secureswiftcontent.com/han/btv/btv10005/srtoutput/manifest.m3u8
 
 #EXTINF:-1 tvg-id="GarudaTV.id" tvg-logo="https://etv-cdn.kdb.co.id/logo.png" tvg-country="ID" group-title="entertainment",Garuda TV
 https://etv-cdn.kdb.co.id/GarudaTV-Stream/index.m3u8
 
-#EXTINF:-1 tvg-id="GarudaTV.2.id" tvg-logo="https://etv-cdn.kdb.co.id/logo.png" tvg-country="ID" group-title="entertainment",Garuda TV 2
-http://vod.linknetott.swiftcontent.com/Content/HLS/Live/Channel(ch45)/index.m3u8
-
-#EXTINF:-1 tvg-id="BTV.id" tvg-logo="https://www.beritasatu.com/assets/images/logo_btv.png" tvg-country="ID" group-title="news",Berita Satu
-https://b1news.beritasatumedia.com/Beritasatu/B1News_manifest.m3u8
+#EXTINF:-1 tvg-id="GarudaTV.id" tvg-logo="https://etv-cdn.kdb.co.id/logo.png" tvg-country="ID" group-title="entertainment",Garuda TV 2
+https://hgmtv.com:19360/garudatvlivestreaming/garudatvlivestreaming.m3u8
 
 #EXTINF:-1 tvg-id="IDTV.id" tvg-logo="https://www.beritasatu.com/assets/images/logo_btv.png" tvg-country="ID" group-title="entertainment",IDTV
 https://b1world.beritasatumedia.com/Beritasatu/B1World_manifest.m3u8
@@ -152,9 +86,6 @@ https://nusantaratv.siar.us/nusantaratv/live/playlist.m3u8
 
 #EXTINF:-1 tvg-id="IndonesianaTV.id" tvg-logo="https://kbtv.akamaized.net/logo.png" tvg-country="ID" group-title="general",Indonesiana.TV
 https://kbtv.akamaized.net/hls/live/2031188/kanalbuya/playlist.m3u8
-
-#EXTINF:-1 tvg-id="InspiraTV.id" tvg-logo="https://inspiratv.siar.us/logo.png" tvg-country="ID" group-title="entertainment",Inspira TV
-https://inspiratv.siar.us/inspiratv/live/playlist.m3u8
 
 #EXTINF:-1 tvg-id="MDTV.id" tvg-logo="https://iptvsystem.my.id/img/mdtv.png" tvg-country="ID" group-title="entertainment",MDTV
 https://streamo.web.id/api/1/get/live/tv/channel/4.m3u8
@@ -224,3 +155,99 @@ https://5bf7b725107e5.streamlock.net/tv9/tv9/playlist.m3u8
 
 #EXTINF:-1 tvg-id="OnlineTVNusantara.id" tvg-logo="https://5bf7b725107e5.streamlock.net/logo.png" tvg-country="ID" group-title="entertainment",Online TV Nusantara
 https://5bf7b725107e5.streamlock.net/onlinetvnusantara/onlinetvnusantara/playlist.m3u8
+
+#EXTINF:-1 tvg-id="AKTV.id" tvg-logo="https://e.siar.us/logo.png" tvg-country="ID" group-title="regional",AKTV
+https://e.siar.us/live/aktv.m3u8
+
+#EXTINF:-1 tvg-id="AlImanTV.id" tvg-logo="https://tv.aliman.id/logo.png" tvg-country="ID" group-title="general",Al-Iman TV
+https://tv.aliman.id/aliman/live.m3u8
+
+#EXTINF:-1 tvg-id="AlWafaTarim.id" tvg-logo="https://ammedia.siar.us/logo.png" tvg-country="ID" group-title="general",Alwafa Tarim TV
+https://ammedia.siar.us/ammedia/live/playlist.m3u8
+
+#EXTINF:-1 tvg-id="AshiilTV.id" tvg-logo="https://ams.juraganstreaming.com/logo.png" tvg-country="ID" group-title="general",Ashiil TV
+https://ams.juraganstreaming.com:5443/LiveApp/streams/ashiiltv2.m3u8
+
+#EXTINF:-1 tvg-id="BaliTV.id" tvg-logo="https://balitv.id/wp-content/uploads/2020/04/logo-balitv.png" tvg-country="ID" group-title="regional",Bali TV
+http://103.180.118.5:9981/stream/channelid/916002722
+
+#EXTINF:-1 tvg-id="BandungTV.id" tvg-logo="https://e.siar.us/logo.png" tvg-country="ID" group-title="regional",Bandung TV
+http://202.150.153.254:65500/bandungtvWEBSITE.m3u8
+
+#EXTINF:-1 tvg-id="InspiraTV.id" tvg-logo="https://inspiratv.siar.us/logo.png" tvg-country="ID" group-title="entertainment",Inspira TV
+https://inspiratv.siar.us/inspiratv/live/playlist.m3u8
+
+#EXTINF:-1 tvg-id="TVRISport.id" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="sports",TVRI Sport
+https://ott-balancer.tvri.go.id/live/eds/SportHD/hls/SportHD.m3u8
+
+#EXTINF:-1 tvg-id="JakTV.id" tvg-logo="https://www.jaktv.co.id/assets/images/logo.png" tvg-country="ID" group-title="regional",Jak TV
+http://vod.linknetott.swiftcontent.com/Content/HLS/Live/Channel(ch392)/index.m3u8
+
+#EXTINF:-1 tvg-id="RajawaliTV.id" tvg-logo="https://rtv.co.id/assets/images/logo.png" tvg-country="ID" group-title="regional",Rajawali TV
+https://rtvstream.rtv.co.id:4555/hls/rtv.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Aceh" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Aceh
+https://ott-balancer.tvri.go.id/live/eds/Aceh/hls/Aceh.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Bali" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Bali
+https://ott-balancer.tvri.go.id/live/eds/Bali/hls/Bali.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Jabar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Barat
+https://ott-balancer.tvri.go.id/live/eds/Jabar/hls/Jabar.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Jateng" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Tengah
+https://ott-balancer.tvri.go.id/live/eds/Jateng/hls/Jateng.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Jatim" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Jawa Timur
+https://ott-balancer.tvri.go.id/live/eds/Jatim/hls/Jatim.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.DKI" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI DKI Jakarta
+https://ott-balancer.tvri.go.id/live/eds/DKI/hls/DKI.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Lampung" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Lampung
+https://ott-balancer.tvri.go.id/live/eds/Lampung/hls/Lampung.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Riau" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Riau
+https://ott-balancer.tvri.go.id/live/eds/Riau/hls/Riau.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sumbar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Barat
+https://ott-balancer.tvri.go.id/live/eds/Sumbar/hls/Sumbar.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sumsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Selatan
+https://ott-balancer.tvri.go.id/live/eds/Sumsel/hls/Sumsel.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sumut" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sumatera Utara
+https://ott-balancer.tvri.go.id/live/eds/Sumut/hls/Sumut.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sulsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Selatan
+https://ott-balancer.tvri.go.id/live/eds/Sulsel/hls/Sulsel.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sultan" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Tengah
+https://ott-balancer.tvri.go.id/live/eds/Sulteng/hls/Sulteng.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sultra" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Tenggara
+https://ott-balancer.tvri.go.id/live/eds/Sultra/hls/Sultra.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Sulut" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Sulawesi Utara
+https://ott-balancer.tvri.go.id/live/eds/Sulut/hls/Sulut.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.NTB" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Nusa Tenggara Barat
+https://ott-balancer.tvri.go.id/live/eds/NTB/hls/NTB.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.NTT" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Nusa Tenggara Timur
+https://ott-balancer.tvri.go.id/live/eds/NTT/hls/NTT.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Papua" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Papua
+https://ott-balancer.tvri.go.id/live/eds/Papua/hls/Papua.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Kalbar" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Barat
+https://ott-balancer.tvri.go.id/live/eds/Kalbar/hls/Kalbar.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Kalsel" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Selatan
+https://ott-balancer.tvri.go.id/live/eds/Kalsel/hls/Kalsel.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Kalteng" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Tengah
+https://ott-balancer.tvri.go.id/live/eds/Kalteng/hls/Kalteng.m3u8
+
+#EXTINF:-1 tvg-id="TVRI.Kaltim" tvg-logo="https://www.tvri.go.id/assets/img/logo-tvri.png" tvg-country="ID" group-title="regional",TVRI Kalimantan Timur
+https://ott-balancer.tvri.go.id/live/eds/Kaltim/hls/Kaltim.m3u8
