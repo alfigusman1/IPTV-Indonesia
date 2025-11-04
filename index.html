@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPTV Indonesia - Live TV Streaming</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Playlist Management Container -->
+    <div id="playlistManagementContainer"></div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-dark sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"> <i class="bi bi-tv-fill"></i> IPTV Indonesia </a>
+        <div class="d-flex align-items-center">
+          <button
+            class="btn btn-outline-light me-2"
+            id="importBtn"
+            data-bs-toggle="modal"
+            data-bs-target="#importModal"
+          >
+            <i class="bi bi-upload"></i> &nbsp;Import
+          </button>
+          <button class="btn btn-outline-light" id="favoritesBtn">
+            <i class="bi bi-heart-fill"></i> &nbsp;Favorit
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Video Player Section -->
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-12">
+          <div class="player-wrapper" id="playerWrapper">
+            <div class="player-placeholder" id="playerPlaceholder">
+              <i class="bi bi-play-circle"></i>
+              <p>Pilih channel untuk mulai streaming</p>
+            </div>
+            <video
+              id="videoPlayer"
+              class="video-js vjs-big-play-centered"
+              controls
+              preload="auto"
+              style="display: none"
+            >
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a web browser
+                that
+                <a href="https://videojs.com/html5-video-support/" target="_blank"
+                  >supports HTML5 video</a
+                >
+              </p>
+            </video>
+            <div class="player-info" id="playerInfo" style="display: none">
+              <h5 id="currentChannelName">-</h5>
+              <span class="badge bg-success" id="statusBadge">LIVE</span>
+            </div>
+            <div class="loading-spinner" id="loadingSpinner" style="display: none">
+              <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-light border-dark">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control bg-dark text-light border-dark"
+              id="searchInput"
+              placeholder="Cari channel..."
+            />
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <select class="form-select bg-dark text-light border-dark" id="countryFilter">
+            <option value="">Semua Negara</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <select class="form-select bg-dark text-light border-dark" id="categoryFilter">
+            <option value="">Semua Kategori</option>
+            <option value="news">Berita</option>
+            <option value="entertainment">Hiburan</option>
+            <option value="sports">Olahraga</option>
+            <option value="music">Musik</option>
+            <option value="kids">Anak-anak</option>
+            <option value="movies">Film</option>
+            <option value="general">Umum</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channels Grid -->
+    <div class="container-fluid">
+      <div class="row" id="channelsGrid">
+        <!-- Channels will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title">Import Playlist M3U8</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="m3uUrl" class="form-label">URL Playlist M3U8</label>
+              <input
+                type="url"
+                class="form-control bg-dark text-light border-secondary"
+                id="m3uUrl"
+                placeholder="https://example.com/playlist.m3u8"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="m3uFile" class="form-label">Atau Upload File</label>
+              <input
+                type="file"
+                class="form-control bg-dark text-light border-secondary"
+                id="m3uFile"
+                accept=".m3u,.m3u8"
+              />
+            </div>
+          </div>
+          <div class="modal-footer border-secondary">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" id="importSubmit">Import</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Video.js -->
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+
+    <!-- HLS.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <!-- IPTV Player Scripts (NEW ORDER) -->
+    <script src="assets/js/channels-advanced.js"></script>
+    <script src="assets/js/playlist-manager-ui.js"></script>
+    <script src="assets/js/player.js"></script>
+    <script src="assets/js/app-advanced.js"></script>
+  </body>
+</html>

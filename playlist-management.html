@@ -1,0 +1,205 @@
+<!-- playlist-management.html - UI untuk playlist management -->
+<!-- Tambahkan ini ke dalam modal atau page terpisah -->
+
+<div class="modal fade" id="playlistModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">
+                    <i class="bi bi-list"></i> Manajemen Playlist
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs nav-fill mb-3" id="playlistTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-tab-content" type="button">
+                            <i class="bi bi-info-circle"></i> Status
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources-tab-content" type="button">
+                            <i class="bi bi-database"></i> Sumber
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import-tab-content" type="button">
+                            <i class="bi bi-upload"></i> Import
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export-tab-content" type="button">
+                            <i class="bi bi-download"></i> Export
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Status Tab -->
+                    <div class="tab-pane fade show active" id="status-tab-content">
+                        <div id="playlistStatus">
+                            <div class="text-center">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Memuat informasi playlist...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sources Tab -->
+                    <div class="tab-pane fade" id="sources-tab-content">
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle"></i> Toggle playlist yang ingin digunakan
+                        </div>
+                        <div id="playlistSources">
+                            <!-- Sources akan diload via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Import Tab -->
+                    <div class="tab-pane fade" id="import-tab-content">
+                        <div class="mb-3">
+                            <h6>Import dari URL</h6>
+                            <div class="input-group mb-2">
+                                <input type="url" class="form-control bg-dark text-light border-secondary" 
+                                       id="playlistUrl" placeholder="https://example.com/playlist.m3u8">
+                                <button class="btn btn-primary" id="importUrlBtn">
+                                    <i class="bi bi-upload"></i> Import
+                                </button>
+                            </div>
+                            <small class="text-muted">Contoh: https://iptv-org.github.io/iptv/index.m3u</small>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Import dari File</h6>
+                            <div class="input-group mb-2">
+                                <input type="file" class="form-control bg-dark text-light border-secondary" 
+                                       id="playlistFile" accept=".m3u,.m3u8">
+                                <button class="btn btn-primary" id="importFileBtn">
+                                    <i class="bi bi-upload"></i> Import
+                                </button>
+                            </div>
+                            <small class="text-muted">Format: .m3u atau .m3u8</small>
+                        </div>
+
+                        <div id="importStatus"></div>
+                    </div>
+
+                    <!-- Export Tab -->
+                    <div class="tab-pane fade" id="export-tab-content">
+                        <div class="mb-3">
+                            <h6>Export sebagai M3U File</h6>
+                            <p class="text-muted">Export semua channel yang dimuat sebagai file M3U</p>
+                            <div class="btn-group d-flex" role="group">
+                                <button type="button" class="btn btn-success" id="exportM3uBtn">
+                                    <i class="bi bi-download"></i> Download M3U
+                                </button>
+                                <button type="button" class="btn btn-info" id="exportJsonBtn">
+                                    <i class="bi bi-download"></i> Download JSON
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Statistik</h6>
+                            <div id="exportStats"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="refreshPlaylistBtn">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh Semua
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Playlist status template -->
+<template id="statusItemTemplate">
+    <div class="card bg-dark border-secondary mb-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="card-title mb-1">
+                        <span class="status-badge badge" data-status="unknown">●</span>
+                        <span class="playlist-name"></span>
+                    </h6>
+                    <small class="text-muted playlist-description"></small>
+                </div>
+                <div class="text-end">
+                    <p class="mb-0">
+                        <strong class="playlist-channels">0</strong> channels
+                    </p>
+                    <small class="text-muted playlist-country"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Playlist source toggle template -->
+<template id="sourceItemTemplate">
+    <div class="card bg-dark border-secondary mb-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="card-title mb-1">
+                        <i class="bi bi-list"></i> <span class="source-name"></span>
+                    </h6>
+                    <small class="text-muted source-description"></small>
+                </div>
+                <div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input source-toggle" type="checkbox" data-source-id="">
+                        <label class="form-check-label source-channels">0 channels</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style>
+.status-badge {
+    font-size: 0.5rem;
+    margin-right: 5px;
+}
+
+.status-badge.loaded {
+    color: #4CAF50;
+}
+
+.status-badge.pending {
+    color: #FFC107;
+}
+
+.status-badge.failed {
+    color: #f44336;
+}
+
+.nav-tabs .nav-link {
+    color: #999;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #e50914;
+    border-bottom-color: #e50914;
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #ccc;
+}
+</style>

@@ -1,0 +1,125 @@
+{
+  "version": "1.0.0",
+  "lastUpdate": "2024-11-04",
+  "channels": [
+    {
+      "id": "id-001",
+      "name": "Metro TV",
+      "country": "Indonesia",
+      "countryCode": "ID",
+      "category": "news",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Metro_TV_%282019%29.svg/200px-Metro_TV_%282019%29.svg.png",
+      "url": "https://edge.medcom.id/live-edge/smil:metro.smil/playlist.m3u8",
+      "status": "active"
+    },
+    {
+      "id": "id-002",
+      "name": "Kompas TV",
+      "country": "Indonesia",
+      "countryCode": "ID",
+      "category": "news",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/KompasTV_2017.svg/200px-KompasTV_2017.svg.png",
+      "url": "https://ythls.armelin.one/channel/UC5BMIWZe9isJXLZwIq0WvwA.m3u8",
+      "status": "active"
+    },
+    {
+      "id": "id-003",
+      "name": "TV One",
+      "country": "Indonesia",
+      "countryCode": "ID",
+      "category": "news",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/TvOne_2023.svg/200px-TvOne_2023.svg.png",
+      "url": "https://ythls.armelin.one/channel/UCy5PTfSa26f1QWR4cRx8Wnw.m3u8",
+      "status": "active"
+    },
+    {
+      "id": "us-001",
+      "name": "ABC News",
+      "country": "United States",
+      "countryCode": "US",
+      "category": "news",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/ABC_News.svg/200px-ABC_News.svg.png",
+      "url": "https://content.uplynk.com/channel/3324f2467c414329b3b0cc5cd987b6be.m3u8",
+      "status": "active"
+    },
+    {
+      "id": "uk-001",
+      "name": "BBC News",
+      "country": "United Kingdom",
+      "countryCode": "GB",
+      "category": "news",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/BBC_News_2019.svg/200px-BBC_News_2019.svg.png",
+      "url": "https://vs-hls-push-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news_channel_hd/t=3840/v=pv14/b=5070016/main.m3u8",
+      "status": "active"
+    }
+  ],
+  "playlists": [
+    {
+      "name": "IPTV-Org Indonesia",
+      "url": "https://iptv-org.github.io/iptv/countries/id.m3u",
+      "channels": 50,
+      "description": "Free IPTV channels from Indonesia"
+    },
+    {
+      "name": "IPTV-Org USA",
+      "url": "https://iptv-org.github.io/iptv/countries/us.m3u",
+      "channels": 300,
+      "description": "Free IPTV channels from United States"
+    },
+    {
+      "name": "IPTV-Org UK",
+      "url": "https://iptv-org.github.io/iptv/countries/gb.m3u",
+      "channels": 100,
+      "description": "Free IPTV channels from United Kingdom"
+    },
+    {
+      "name": "IPTV-Org Global",
+      "url": "https://iptv-org.github.io/iptv/index.m3u",
+      "channels": 8000,
+      "description": "All free IPTV channels worldwide"
+    },
+    {
+      "name": "Free-TV",
+      "url": "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
+      "channels": 500,
+      "description": "Free TV channels from various countries"
+    }
+  ],
+  "categories": [
+    {
+      "id": "news",
+      "name": "Berita",
+      "icon": "bi-newspaper"
+    },
+    {
+      "id": "entertainment",
+      "name": "Hiburan",
+      "icon": "bi-film"
+    },
+    {
+      "id": "sports",
+      "name": "Olahraga",
+      "icon": "bi-trophy"
+    },
+    {
+      "id": "music",
+      "name": "Musik",
+      "icon": "bi-music-note"
+    },
+    {
+      "id": "kids",
+      "name": "Anak-anak",
+      "icon": "bi-balloon"
+    },
+    {
+      "id": "movies",
+      "name": "Film",
+      "icon": "bi-camera-reels"
+    },
+    {
+      "id": "general",
+      "name": "Umum",
+      "icon": "bi-tv"
+    }
+  ]
+}
