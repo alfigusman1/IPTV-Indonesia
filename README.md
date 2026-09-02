@@ -1,5 +1,15 @@
 # IPTV Indonesia - Live TV Streaming Website
 
+> ⚠️ **v2 (2026-09):** Arsitektur pindah ke **backend + database**. Aplikasi aktif ada di
+> **[`server/`](server/README.md)** — Node.js + Express + MySQL, dengan **health-checker**
+> yang menyaring channel mati (hanya channel `active` yang tampil) dan **frontend di-serve
+> backend**. Dokumen di bawah ini menjelaskan versi lama (100% client-side, localStorage)
+> yang kini **digantikan** oleh `server/` (file lama `assets/js/channels*.js`,
+> `app-advanced.js`, `playlist-management.html`, `script.py` sudah usang).
+> Sumber channel awal (`index.m3u`) kini juga tersalin di `server/data/index.m3u`.
+
+---
+
 Website modern untuk streaming IPTV dengan desain responsif dan fitur-fitur lengkap.
 
 ## 🎯 Fitur Utama
