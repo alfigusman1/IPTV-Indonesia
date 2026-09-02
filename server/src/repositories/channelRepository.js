@@ -31,8 +31,12 @@ const channelRepo = {
          VALUES ${values.join(',')}
          ON DUPLICATE KEY UPDATE
            name=VALUES(name), tvg_id=VALUES(tvg_id), logo=VALUES(logo),
-           category=VALUES(category), country=VALUES(country),
-           country_code=VALUES(country_code), group_title=VALUES(group_title),
+           category=VALUES(category), group_title=VALUES(group_title),
+           -- country/country_code & source_id TIDAK ditimpa (pertahankan import pertama,
+           -- mis. sumber ber-priority kecil seperti kurasi ID) agar tag negara tak rusak
+           -- saat channel yang sama muncul lagi di sumber global.
+           country=COALESCE(country, VALUES(country)),
+           country_code=COALESCE(country_code, VALUES(country_code)),
            source_id=COALESCE(source_id, VALUES(source_id)), updated_at=NOW()`,
         params,
       );
@@ -41,9 +45,13 @@ const channelRepo = {
     return affected;
   },
 
-  // Channel untuk publik: hanya yang status='active' & tidak disembunyikan.
+  // Channel untuk publik: status='active' ATAU dari sumber trusted (mis. kurasi ID —
+  // selalu tampil, browser user yang memutar), selama tidak disembunyikan manual.
   async listActive({ category, country, search, limit = 500, offset = 0 } = {}) {
-    const where = ["status='active'", 'is_hidden=0'];
+    const where = [
+      "(status='active' OR source_id IN (SELECT id FROM iptv_sources WHERE trusted=1))",
+      'is_hidden=0',
+    ];
     const params = [];
     if (category) { where.push('category=?'); params.push(category); }
     if (country)  { where.push('country_code=?'); params.push(country); }
@@ -123,7 +131,9 @@ const channelRepo = {
   async distinctCountries() {
     return q(
       `SELECT country_code, MAX(country) AS country, COUNT(*) AS n
-         FROM iptv_channels WHERE status='active' AND is_hidden=0 AND country_code IS NOT NULL
+         FROM iptv_channels
+        WHERE (status='active' OR source_id IN (SELECT id FROM iptv_sources WHERE trusted=1))
+          AND is_hidden=0 AND country_code IS NOT NULL
         GROUP BY country_code ORDER BY country`,
     );
   },
@@ -131,7 +141,8 @@ const channelRepo = {
   async distinctCategories() {
     return q(
       `SELECT category, COUNT(*) AS n FROM iptv_channels
-        WHERE status='active' AND is_hidden=0 AND category IS NOT NULL
+        WHERE (status='active' OR source_id IN (SELECT id FROM iptv_sources WHERE trusted=1))
+          AND is_hidden=0 AND category IS NOT NULL
         GROUP BY category ORDER BY n DESC`,
     );
   },

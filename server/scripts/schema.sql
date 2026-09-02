@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS iptv_sources (
   type             ENUM('m3u_url','m3u_file','manual') NOT NULL DEFAULT 'm3u_url',
   country_code     VARCHAR(8)    NULL,          -- fallback bila channel tak punya tvg-country
   enabled          TINYINT(1)    NOT NULL DEFAULT 1,
+  trusted          TINYINT(1)    NOT NULL DEFAULT 0,   -- 1 = channel selalu tampil (tak disaring health-check)
   priority         INT           NOT NULL DEFAULT 100, -- kecil = didahulukan saat dedup
   last_imported_at DATETIME      NULL,
   channel_count    INT           NOT NULL DEFAULT 0,

@@ -8,7 +8,9 @@ const sourceRepo = require('../src/repositories/sourceRepository');
 
 const SOURCES = [
   // Indonesia (priority kecil = didahulukan saat dedup)
-  { name: 'Kurasi Lokal (index.m3u)', url: 'file:data/index.m3u', type: 'm3u_file', countryCode: 'ID', priority: 1 },
+  // trusted:1 → channel kurasi SELALU tampil (browser Anda yang memutar; server tak
+  // selalu bisa memvalidasi karena geo/jaringan). Kelola daftar ini di index.m3u.
+  { name: 'Kurasi Lokal (index.m3u)', url: 'file:data/index.m3u', type: 'm3u_file', countryCode: 'ID', priority: 1, trusted: 1 },
   { name: 'iptv-org Indonesia', url: 'https://iptv-org.github.io/iptv/countries/id.m3u', type: 'm3u_url', countryCode: 'ID', priority: 100 },
   // Korea (channel Korea muncul juga)
   { name: 'iptv-org Korea', url: 'https://iptv-org.github.io/iptv/countries/kr.m3u', type: 'm3u_url', countryCode: 'KR', priority: 120 },
