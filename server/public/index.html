@@ -6,7 +6,6 @@
     <title>IPTV Indonesia - Live TV Streaming</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
@@ -30,9 +29,7 @@
             <i class="bi bi-play-circle"></i>
             <p>Pilih channel untuk mulai streaming</p>
           </div>
-          <video id="videoPlayer" class="video-js vjs-big-play-centered" controls preload="auto" style="display: none">
-            <p class="vjs-no-js">Aktifkan JavaScript untuk menonton.</p>
-          </video>
+          <video id="videoPlayer" controls playsinline preload="auto" style="display: none"></video>
           <div class="player-info" id="playerInfo" style="display: none">
             <h5 id="currentChannelName">-</h5>
             <span class="badge bg-success" id="statusBadge">LIVE</span>
@@ -72,7 +69,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="assets/js/player.js"></script>
     <script src="assets/js/app.js"></script>

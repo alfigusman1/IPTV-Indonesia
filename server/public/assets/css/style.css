@@ -1261,12 +1261,30 @@ body {
   overflow: hidden; text-overflow: ellipsis;
 }
 .channel-card-footer { margin-top: auto; }
-.player-wrapper { max-height: 70vh; }
 #channelsGrid { --bs-gutter-x: .75rem; }
+
+/* Player: tampil PENUH (tidak terpotong), responsif, kontrol native (fullscreen+volume) */
+.player-wrapper {
+  max-height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-wrapper video {
+  width: 100%;
+  height: auto;
+  max-height: 82vh;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;   /* jangan crop — letterbox bila rasio beda */
+  background: #000;
+  display: block;
+}
+/* Saat fullscreen, video isi layar penuh */
+#videoPlayer:fullscreen { width: 100vw; height: 100vh; max-height: none; object-fit: contain; }
 
 @media (max-width: 575.98px) {
   .channel-card-image { height: 84px; }
   .channel-card-title { font-size: .82rem; }
-  .player-wrapper { max-height: 40vh; }
+  .player-wrapper, .player-wrapper video { max-height: 52vh; }
   .navbar-brand { font-size: 1rem; }
 }

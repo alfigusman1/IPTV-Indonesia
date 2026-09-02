@@ -29,10 +29,12 @@ const COUNTRY_NAMES = {
 };
 const countryName = (code, fallback) => COUNTRY_NAMES[code] || fallback || code || '';
 
+const DEFAULT_COUNTRY = 'ID'; // default tampilkan Indonesia (negara lain tetap bisa dipilih)
+
 const state = {
   channels: [],
   favorites: new Set(JSON.parse(localStorage.getItem('iptvFavorites') || '[]')),
-  filter: { search: '', country: '', category: '', favoritesOnly: false },
+  filter: { search: '', country: DEFAULT_COUNTRY, category: '', favoritesOnly: false },
 };
 
 let player;
@@ -140,16 +142,26 @@ function populateFilters(countries, categories) {
     categories.map(c => `<option value="${escapeHtml(c.category)}">${escapeHtml(CATEGORY_LABELS[c.category] || c.category)} (${c.n})</option>`).join('');
 }
 
+// Ambil channel aktif; server-side filter negara (efisien untuk katalog besar).
+async function loadChannels() {
+  const c = state.filter.country;
+  state.channels = await api('/api/channels?limit=5000' + (c ? '&country=' + encodeURIComponent(c) : ''));
+}
+
 async function init() {
   try {
-    const [channels, countries, categories, stats] = await Promise.all([
-      api('/api/channels?limit=5000'),
+    const [, countries, categories, stats] = await Promise.all([
+      loadChannels(),
       api('/api/countries'),
       api('/api/categories'),
       api('/api/stats'),
     ]);
-    state.channels = channels;
     populateFilters(countries, categories);
+    els.country.value = state.filter.country; // pra-pilih default (Indonesia)
+    if (els.country.value !== state.filter.country) { // ID tak ada → tampilkan semua
+      state.filter.country = '';
+      await loadChannels();
+    }
     if (els.stats) els.stats.textContent = `${stats.active} aktif`;
     render();
   } catch (err) {
@@ -159,7 +171,7 @@ async function init() {
 
 // Events
 els.search.addEventListener('input', e => { state.filter.search = e.target.value; render(); });
-els.country.addEventListener('change', e => { state.filter.country = e.target.value; render(); });
+els.country.addEventListener('change', async e => { state.filter.country = e.target.value; await loadChannels(); render(); });
 els.category.addEventListener('change', e => { state.filter.category = e.target.value; render(); });
 els.favBtn.addEventListener('click', () => {
   state.filter.favoritesOnly = !state.filter.favoritesOnly;
