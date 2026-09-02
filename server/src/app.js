@@ -19,6 +19,7 @@ if (process.env.NODE_ENV !== 'test') app.use(morgan('tiny'));
 app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'iptv-server', uptime: process.uptime() }));
 
 // API
+app.use('/api', require('./routes/stream'));   // /api/stream — proxy HLS (bypass CORS)
 app.use('/api', require('./routes/channels'));
 app.use('/api/admin', require('./routes/admin'));
 
