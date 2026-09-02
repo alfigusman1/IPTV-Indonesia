@@ -5,43 +5,73 @@ const TIMEOUT_MS     = parseInt(process.env.CHECK_TIMEOUT_MS, 10) || 8000;
 const CONCURRENCY    = parseInt(process.env.CHECK_CONCURRENCY, 10) || 20;
 const FAIL_THRESHOLD = parseInt(process.env.CHECK_FAIL_THRESHOLD, 10) || 2;
 
-const UA = 'Mozilla/5.0 (compatible; IPTV-HealthChecker/1.0)';
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
-// Cek satu URL stream via HTTP. "hidup" = manifest/stream reachable (2xx) dan,
-// bila terbaca, berisi penanda HLS (#EXTM3U) atau content-type media.
-async function checkOne(url) {
+// Ambil teks (untuk manifest .m3u8). Return { res, text }.
+async function fetchText(url) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-  const start = Date.now();
   try {
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      redirect: 'follow',
-      headers: { 'User-Agent': UA, Range: 'bytes=0-4095', Accept: '*/*' },
-    });
-    const latencyMs = Date.now() - start;
-    const httpStatus = res.status;
-    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    const res = await fetch(url, { signal: ctrl.signal, redirect: 'follow', headers: { 'User-Agent': UA, Accept: '*/*' } });
+    const text = res.ok ? await res.text() : null;
+    return { res, text };
+  } finally { clearTimeout(timer); }
+}
 
-    if (!res.ok && res.status !== 206) {
-      try { await res.body?.cancel(); } catch (_) {}
-      return { ok: false, httpStatus, latencyMs };
+// Cek satu URL benar-benar terjangkau (2xx/206). Untuk segmen/media (bukan manifest).
+async function reachable(url) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal, redirect: 'follow', headers: { 'User-Agent': UA, Range: 'bytes=0-2047', Accept: '*/*' } });
+    try { await res.body?.cancel(); } catch (_) {}
+    return { ok: res.ok || res.status === 206, status: res.status };
+  } catch (_) {
+    return { ok: false, status: null };
+  } finally { clearTimeout(timer); }
+}
+
+const firstUrlLine = (text) =>
+  text.split(/\r?\n/).map(l => l.trim()).find(l => l && !l.startsWith('#')) || null;
+
+// Cek "hidup" secara BERLAPIS untuk HLS (menghindari false-positive seperti "Indosiar 2":
+// manifest 200 tapi segmen mati). manifest → variant (bila master playlist) → SEGMEN
+// benar-benar terjangkau. Non-HLS: cek reachability langsung.
+async function checkOne(url) {
+  const start = Date.now();
+  const isHls = /\.m3u8(\?|$)/i.test(url) || /\/m3u8/i.test(url);
+  try {
+    if (!isHls) {
+      const r = await reachable(url);
+      return { ok: r.ok, httpStatus: r.status, latencyMs: Date.now() - start };
     }
 
-    // Content-type media/manifest → reachable, tak perlu baca body.
-    if (/mpegurl|mpeg-url|octet-stream|mp2t|video\//.test(ct)) {
-      try { await res.body?.cancel(); } catch (_) {}
-      return { ok: true, httpStatus, latencyMs };
+    // Lapis 1: manifest
+    const m = await fetchText(url);
+    if (!m.res.ok || !m.text || !m.text.includes('#EXTM3U')) {
+      return { ok: false, httpStatus: m.res.status, latencyMs: Date.now() - start };
+    }
+    let firstUrl = firstUrlLine(m.text);
+    if (!firstUrl) return { ok: false, httpStatus: m.res.status, latencyMs: Date.now() - start }; // manifest kosong
+
+    let mediaUrl = new URL(firstUrl, url).toString();
+
+    // Lapis 2: bila master playlist (variant .m3u8), ambil variant → cari segmen.
+    if (/\.m3u8(\?|$)/i.test(mediaUrl) || /#EXT-X-STREAM-INF/i.test(m.text)) {
+      const v = await fetchText(mediaUrl);
+      if (!v.res.ok || !v.text || !v.text.includes('#EXTM3U')) {
+        return { ok: false, httpStatus: v.res.status, latencyMs: Date.now() - start };
+      }
+      const seg = firstUrlLine(v.text);
+      if (!seg) return { ok: false, httpStatus: v.res.status, latencyMs: Date.now() - start };
+      mediaUrl = new URL(seg, mediaUrl).toString();
     }
 
-    // Selain itu, baca potongan awal untuk cari penanda HLS.
-    const text = (await res.text()).slice(0, 1024);
-    const ok = text.includes('#EXTM3U') || text.includes('#EXTINF') || res.ok;
-    return { ok, httpStatus, latencyMs };
+    // Lapis 3: segmen benar-benar terjangkau?
+    const r = await reachable(mediaUrl);
+    return { ok: r.ok, httpStatus: m.res.status, latencyMs: Date.now() - start };
   } catch (err) {
     return { ok: false, httpStatus: null, latencyMs: Date.now() - start, error: err.message };
-  } finally {
-    clearTimeout(timer);
   }
 }
 

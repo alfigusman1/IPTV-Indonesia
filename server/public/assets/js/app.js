@@ -11,6 +11,24 @@ const CATEGORY_LABELS = {
   business: 'Bisnis', local: 'Lokal',
 };
 
+// Nama negara (ISO-3166 alpha-2) agar dropdown mudah dibaca (bukan sekadar kode).
+const COUNTRY_NAMES = {
+  ID: 'Indonesia', MY: 'Malaysia', SG: 'Singapura', KR: 'Korea Selatan', KP: 'Korea Utara',
+  JP: 'Jepang', CN: 'China', HK: 'Hong Kong', TW: 'Taiwan', TH: 'Thailand', VN: 'Vietnam',
+  PH: 'Filipina', IN: 'India', PK: 'Pakistan', BD: 'Bangladesh', US: 'Amerika Serikat',
+  CA: 'Kanada', MX: 'Meksiko', BR: 'Brasil', AR: 'Argentina', CL: 'Chili', CO: 'Kolombia',
+  PE: 'Peru', GB: 'Inggris', UK: 'Inggris', IE: 'Irlandia', FR: 'Prancis', DE: 'Jerman',
+  NL: 'Belanda', BE: 'Belgia', ES: 'Spanyol', PT: 'Portugal', IT: 'Italia', CH: 'Swiss',
+  AT: 'Austria', SE: 'Swedia', NO: 'Norwegia', DK: 'Denmark', FI: 'Finlandia', PL: 'Polandia',
+  CZ: 'Ceko', SK: 'Slovakia', HU: 'Hongaria', RO: 'Rumania', BG: 'Bulgaria', GR: 'Yunani',
+  TR: 'Turki', RU: 'Rusia', UA: 'Ukraina', BY: 'Belarus', RS: 'Serbia', HR: 'Kroasia',
+  SA: 'Arab Saudi', AE: 'UEA', QA: 'Qatar', KW: 'Kuwait', IQ: 'Irak', IR: 'Iran',
+  IL: 'Israel', EG: 'Mesir', MA: 'Maroko', DZ: 'Aljazair', TN: 'Tunisia', ZA: 'Afrika Selatan',
+  NG: 'Nigeria', KE: 'Kenya', AU: 'Australia', NZ: 'Selandia Baru', AD: 'Andorra',
+  AL: 'Albania', AM: 'Armenia', AZ: 'Azerbaijan', CY: 'Siprus', CR: 'Kosta Rika',
+};
+const countryName = (code, fallback) => COUNTRY_NAMES[code] || fallback || code || '';
+
 const state = {
   channels: [],
   favorites: new Set(JSON.parse(localStorage.getItem('iptvFavorites') || '[]')),
@@ -80,7 +98,7 @@ function card(ch) {
         <div class="channel-card-image">${logo}</div>
         <div class="channel-card-body">
           <h6 class="channel-card-title" title="${escapeHtml(ch.name)}">${escapeHtml(ch.name)}</h6>
-          <p class="channel-card-country"><i class="bi bi-geo-alt"></i> ${escapeHtml(ch.country || ch.country_code || '')}</p>
+          <p class="channel-card-country"><i class="bi bi-geo-alt"></i> ${escapeHtml(countryName(ch.country_code, ch.country))}</p>
           <div class="channel-card-footer">
             <div>
               <span class="status-indicator active"></span>
@@ -114,7 +132,10 @@ function render() {
 
 function populateFilters(countries, categories) {
   els.country.innerHTML = '<option value="">Semua Negara</option>' +
-    countries.map(c => `<option value="${escapeHtml(c.country_code)}">${escapeHtml(c.country || c.country_code)} (${c.n})</option>`).join('');
+    countries
+      .map(c => ({ ...c, label: countryName(c.country_code, c.country) }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+      .map(c => `<option value="${escapeHtml(c.country_code)}">${escapeHtml(c.label)} (${c.n})</option>`).join('');
   els.category.innerHTML = '<option value="">Semua Kategori</option>' +
     categories.map(c => `<option value="${escapeHtml(c.category)}">${escapeHtml(CATEGORY_LABELS[c.category] || c.category)} (${c.n})</option>`).join('');
 }

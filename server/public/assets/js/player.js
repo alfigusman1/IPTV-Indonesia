@@ -30,7 +30,8 @@ class VideoPlayer {
                 aspectRatio: '16:9',
                 html5: {
                     vhs: {
-                        enableLowInitialPlaylist: true,
+                        enableLowInitialPlaylist: false, // mulai kualitas tinggi
+                        limitRenditionByPlayerDimensions: false, // jangan batasi ke ukuran player
                         smoothQualityChange: true,
                         overrideNative: true
                     }
@@ -99,19 +100,29 @@ class VideoPlayer {
 
         this.hls = new Hls({
             enableWorker: true,
-            lowLatencyMode: true,
-            backBufferLength: 90,
-            maxBufferLength: 30,
-            maxMaxBufferLength: 600,
-            maxBufferSize: 60 * 1000 * 1000,
+            lowLatencyMode: false,          // matikan LL agar buffer stabil & kualitas prioritas
+            // ── Kualitas: pakai ABR tapi jangan dibatasi ukuran player; mulai dari
+            //    kualitas tertinggi yang sanggup, estimasi bandwidth awal tinggi ──
+            startLevel: -1,                 // -1 = auto (ABR pilih terbaik)
+            capLevelToPlayerSize: false,    // JANGAN turunkan kualitas ke ukuran <video>
+            capLevelOnFPSDrop: false,
+            abrEwmaDefaultEstimate: 3000000, // asumsi ~3 Mbps → mulai kualitas lebih tinggi
+            abrBandWidthFactor: 0.95,
+            abrBandWidthUpFactor: 0.8,
+            // ── Buffer lebih besar → playback mulus, minim buffering ──
+            backBufferLength: 60,
+            maxBufferLength: 60,
+            maxMaxBufferLength: 900,
+            maxBufferSize: 120 * 1000 * 1000,
             maxBufferHole: 0.5,
-            manifestLoadingTimeOut: 10000,
-            manifestLoadingMaxRetry: 3,
+            // ── Timeout & retry loading ──
+            manifestLoadingTimeOut: 12000,
+            manifestLoadingMaxRetry: 4,
             manifestLoadingRetryDelay: 1000,
-            levelLoadingTimeOut: 10000,
+            levelLoadingTimeOut: 12000,
             levelLoadingMaxRetry: 4,
             levelLoadingRetryDelay: 1000,
-            fragLoadingTimeOut: 20000,
+            fragLoadingTimeOut: 25000,
             fragLoadingMaxRetry: 6,
             fragLoadingRetryDelay: 1000
         });
@@ -119,8 +130,18 @@ class VideoPlayer {
         this.hls.loadSource(url);
         this.hls.attachMedia(this.videoElement);
 
-        // HLS.js events
-        this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        // HLS.js events — setelah manifest ter-parse, pilih level tertinggi awal
+        // lalu biarkan ABR menyesuaikan (kualitas bagus tapi tetap adaptif).
+        this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+            try {
+                if (data && Array.isArray(data.levels) && data.levels.length > 1) {
+                    // mulai dari kualitas tertinggi; ABR akan turun bila bandwidth kurang
+                    const top = data.levels.reduce((hi, lv, i, arr) =>
+                        (lv.height || lv.bitrate || 0) > (arr[hi].height || arr[hi].bitrate || 0) ? i : hi, 0);
+                    this.hls.startLevel = top;
+                    this.hls.nextLevel = top;
+                }
+            } catch (_) { /* ignore */ }
             this.videoElement.play().catch(error => {
                 console.error('Autoplay failed:', error);
                 this.updateStatus('READY', 'info');

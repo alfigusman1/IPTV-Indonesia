@@ -22,11 +22,11 @@ CREATE TABLE IF NOT EXISTS iptv_sources (
 -- ── Channel ──────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS iptv_channels (
   id              INT AUTO_INCREMENT PRIMARY KEY,
-  name            VARCHAR(191)  NOT NULL,
-  stream_url      VARCHAR(1024) NOT NULL,
+  name            VARCHAR(255)  NOT NULL,
+  stream_url      VARCHAR(2048) NOT NULL,
   url_hash        CHAR(40)      NOT NULL,        -- sha1(stream_url) untuk dedup
-  tvg_id          VARCHAR(191)  NULL,
-  logo            VARCHAR(1024) NULL,
+  tvg_id          VARCHAR(255)  NULL,
+  logo            VARCHAR(2048) NULL,
   category        VARCHAR(64)   NULL,            -- news, entertainment, sports, ...
   country         VARCHAR(100)  NULL,
   country_code    VARCHAR(8)    NULL,
@@ -60,3 +60,10 @@ CREATE TABLE IF NOT EXISTS iptv_check_logs (
   checked_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY idx_channel (channel_id, checked_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Perlebar kolom untuk instalasi lama (idempotent — MODIFY aman diulang).
+-- Beberapa sumber (iptv-org global) punya URL/logo panjang > 1024 char.
+ALTER TABLE iptv_channels MODIFY stream_url VARCHAR(2048) NOT NULL;
+ALTER TABLE iptv_channels MODIFY logo VARCHAR(2048) NULL;
+ALTER TABLE iptv_channels MODIFY name VARCHAR(255) NOT NULL;
+ALTER TABLE iptv_channels MODIFY tvg_id VARCHAR(255) NULL;
