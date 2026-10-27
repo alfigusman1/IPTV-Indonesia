@@ -1,0 +1,16 @@
+# IPTV Server — build + jalankan di server docker (mis. 192.168.18.141).
+#   docker compose up -d --build
+# Kredensial dibaca dari ./.env (DB iptv @ 192.168.18.142). Image TIDAK memuat .env.
+services:
+  iptv-server:
+    build: .
+    image: iptv-server:latest
+    container_name: iptv-server
+    restart: unless-stopped
+    ports:
+      - "4300:4300"
+    env_file:
+      - ./.env
+    environment:
+      NODE_ENV: production
+      PORT: 4300
