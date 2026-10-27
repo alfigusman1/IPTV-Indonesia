@@ -1,6 +1,6 @@
 {
   "name": "iptv-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend IPTV — MySQL, importer M3U, health-checker, REST API, serve frontend",
   "main": "src/server.js",
   "scripts": {
@@ -19,12 +19,12 @@
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.11.0",
-    "node-cron": "^3.0.3"
+    "node-cron": "^4.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=24.22.1"
   }
 }
