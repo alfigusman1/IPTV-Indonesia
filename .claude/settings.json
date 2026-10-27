@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run start-dev)",
+      "Bash(npm start)",
+      "Bash(npx eslint*)",
+      "Bash(node server.js)",
+      "Bash(nodemon server.js)",
+      "Bash(pm2 start*)",
+      "Bash(pm2 stop*)",
+      "Bash(pm2 restart*)",
+      "Bash(pm2 status)",
+      "Bash(pm2 logs*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(curl -s --max-time*)",
+      "Bash(node -e*)",
+      "Bash(python \"C:/Users/alfig/AppData/Local/Temp/claude/c--xampp-htdocs-uinsgd--claude/a99813fc-21fe-4dfe-a5d9-453c5e5aa95a/scratchpad/k8s_patch_cm.py\")",
+      "Bash(python \"C:/Users/alfig/AppData/Local/Temp/claude/c--xampp-htdocs-uinsgd--claude/a99813fc-21fe-4dfe-a5d9-453c5e5aa95a/scratchpad/k8s.py\" *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(node -e 'let d=\"\";process.stdin.on(\"data\",c=>d+=c);process.stdin.on(\"end\",()=>process.stdout.write((JSON.parse(d).tool_input||{}).file_path||\"\"));' 2>/dev/null); case \"$f\" in *.js) ;; *) exit 0;; esac; root=$(printf '%s' \"$f\" | sed -E 's#^(.*[/\\]api[/\\][^/\\]+)[/\\].*$#\\1#'); [ \"$root\" != \"$f\" ] && [ -f \"$root/.eslintrc.json\" ] && cd \"$root\" && npx eslint --fix \"$f\" --quiet 2>/dev/null; exit 0",
+            "statusMessage": "ESLint auto-fix (api/*)...",
+            "timeout": 30,
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
