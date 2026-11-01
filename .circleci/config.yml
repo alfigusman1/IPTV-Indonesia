@@ -1,0 +1,63 @@
+# =============================================================================
+# .circleci/config.yml — CI: audit dependency + build image Docker (IPTV server)
+# =============================================================================
+#
+# Alur kerja:
+#   audit → build (tanpa push)
+#
+# Catatan:
+#   - Image dibangun hanya untuk linux/amd64 (host iptv 192.168.18.141 = x86_64).
+#   - TIDAK ada push ke Docker Hub: secret DOCKERHUB_USERNAME/DOCKERHUB_TOKEN
+#     belum diset di CircleCI. Tambahkan langkah login + --push bila sudah ada.
+# =============================================================================
+
+version: 2.1
+
+jobs:
+
+  # Gate: gagal bila ada vulnerability high/critical di dependency produksi.
+  audit:
+    docker:
+      - image: cimg/node:24.22.1
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: npm audit — server
+          working_directory: ~/project/server
+          command: npm audit --omit=dev --audit-level=high
+
+  # Build image dari server/Dockerfile (amd64 saja, tanpa push).
+  build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+    environment:
+      IMAGE_NAME: iptv-server
+      BUILD_CONTEXT: ./server
+    steps:
+      - checkout
+
+      - run:
+          name: Set up Docker Buildx
+          command: |
+            docker buildx create --name ci-builder --driver docker-container --use
+            docker buildx inspect --bootstrap
+
+      - run:
+          name: Build image (linux/amd64, tanpa push)
+          command: |
+            SHORT_SHA=$(echo "$CIRCLE_SHA1" | cut -c1-7)
+            docker buildx build \
+              --platform linux/amd64 \
+              --file $BUILD_CONTEXT/Dockerfile \
+              --tag $IMAGE_NAME:sha-$SHORT_SHA \
+              $BUILD_CONTEXT
+
+workflows:
+  audit-and-build:
+    jobs:
+      - audit
+      - build:
+          requires:
+            - audit

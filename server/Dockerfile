@@ -5,7 +5,7 @@ ENV NODE_ENV=production
 
 # deps (layer cache)
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 
 # kode + frontend + data
 COPY . .

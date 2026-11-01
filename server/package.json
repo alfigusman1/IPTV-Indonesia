@@ -1,6 +1,6 @@
 {
   "name": "iptv-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Backend IPTV — MySQL, importer M3U, health-checker, REST API, serve frontend",
   "main": "src/server.js",
   "scripts": {
